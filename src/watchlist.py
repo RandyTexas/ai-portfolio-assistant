@@ -5,3 +5,11 @@ WATCHLIST = [
     {"ticker": "O", "category": "reit"},
     {"ticker": "SPY", "category": "etf"},
 ]
+
+
+def get_ticker_symbols():
+    return [item["ticker"] for item in WATCHLIST]
+
+
+def get_stocks_by_category(category):
+    return [item for item in WATCHLIST if item["category"] == category]
