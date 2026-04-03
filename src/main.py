@@ -6,8 +6,8 @@ def main():
     print(f"{APP_NAME} v{VERSION}")
     print(f"Mode: {DEFAULT_MODE}")
     print(f"Current watchlist ({len(WATCHLIST)} stocks):")
-    for ticker in WATCHLIST:
-        print(f"- {ticker}")
+    for item in WATCHLIST:
+        print(f"- {item['ticker']} ({item['category']})")
 
 
 if __name__ == "__main__":
