@@ -11,6 +11,10 @@ def get_ticker_symbols():
     return [item["ticker"] for item in WATCHLIST]
 
 
+def has_ticker(ticker):
+    return ticker.upper() in get_ticker_symbols()
+
+
 def get_stocks_by_category(category):
     return [item for item in WATCHLIST if item["category"] == category]
 
@@ -23,7 +27,7 @@ def add_stock(ticker, category):
     ticker = ticker.upper()
     category = category.lower()
 
-    if ticker in get_ticker_symbols():
+    if has_ticker(ticker):
         return False
 
     WATCHLIST.append({"ticker": ticker, "category": category})

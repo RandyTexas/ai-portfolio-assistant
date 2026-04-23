@@ -5,12 +5,17 @@ from watchlist import (
     get_ticker_symbols,
     get_stocks_by_category,
     get_categories,
+    has_ticker,
 )
 
 
 def main():
     print(f"{APP_NAME} v{VERSION}")
     print(f"Mode: {DEFAULT_MODE}")
+
+    print("\nWatchlist checks:")
+    print(f"Has AAPL: {has_ticker('AAPL')}")
+    print(f"Has NVDA: {has_ticker('NVDA')}")
 
     display_watchlist(WATCHLIST, "Current watchlist")
 
@@ -30,4 +35,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
