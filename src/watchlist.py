@@ -20,4 +20,11 @@ def get_categories():
 
 
 def add_stock(ticker, category):
-    WATCHLIST.append({"ticker": ticker.upper(), "category": category.lower()})
+    ticker = ticker.upper()
+    category = category.lower()
+
+    if ticker in get_ticker_symbols():
+        return False
+
+    WATCHLIST.append({"ticker": ticker, "category": category})
+    return True

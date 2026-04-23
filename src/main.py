@@ -10,10 +10,13 @@ from watchlist import (
 
 
 def main():
-    add_stock("NVDA", "growth")
+    first_add = add_stock("NVDA", "growth")
+    second_add = add_stock("NVDA", "growth")
 
     print(f"{APP_NAME} v{VERSION}")
     print(f"Mode: {DEFAULT_MODE}")
+    print(f"First NVDA add worked: {first_add}")
+    print(f"Second NVDA add worked: {second_add}")
 
     display_watchlist(WATCHLIST, "Current watchlist")
 
