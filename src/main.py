@@ -6,6 +6,7 @@ from watchlist import (
     get_stocks_by_category,
     get_categories,
     has_ticker,
+    get_stock_by_ticker,
 )
 
 
@@ -16,6 +17,10 @@ def main():
     print("\nWatchlist checks:")
     print(f"Has AAPL: {has_ticker('AAPL')}")
     print(f"Has NVDA: {has_ticker('NVDA')}")
+
+    print("\nSingle stock lookups:")
+    print(f"AAPL lookup: {get_stock_by_ticker('AAPL')}")
+    print(f"NVDA lookup: {get_stock_by_ticker('NVDA')}")
 
     display_watchlist(WATCHLIST, "Current watchlist")
 

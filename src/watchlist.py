@@ -15,6 +15,14 @@ def has_ticker(ticker):
     return ticker.upper() in get_ticker_symbols()
 
 
+def get_stock_by_ticker(ticker):
+    ticker = ticker.upper()
+    for item in WATCHLIST:
+        if item["ticker"] == ticker:
+            return item
+    return None
+
+
 def get_stocks_by_category(category):
     return [item for item in WATCHLIST if item["category"] == category]
 
