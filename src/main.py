@@ -1,6 +1,11 @@
 from config.settings import APP_NAME, VERSION, DEFAULT_MODE
 from helpers import display_watchlist
-from watchlist import WATCHLIST, get_ticker_symbols, get_stocks_by_category
+from watchlist import (
+    WATCHLIST,
+    get_ticker_symbols,
+    get_stocks_by_category,
+    get_categories,
+)
 
 
 def main():
@@ -8,6 +13,10 @@ def main():
     print(f"Mode: {DEFAULT_MODE}")
 
     display_watchlist(WATCHLIST, "Current watchlist")
+
+    print("\nAvailable categories:")
+    for category in get_categories():
+        print(f"- {category}")
 
     print("\nTicker symbols only:")
     for ticker in get_ticker_symbols():

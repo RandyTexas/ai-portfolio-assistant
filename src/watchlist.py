@@ -13,3 +13,7 @@ def get_ticker_symbols():
 
 def get_stocks_by_category(category):
     return [item for item in WATCHLIST if item["category"] == category]
+
+
+def get_categories():
+    return sorted({item["category"] for item in WATCHLIST})
