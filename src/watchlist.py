@@ -17,3 +17,7 @@ def get_stocks_by_category(category):
 
 def get_categories():
     return sorted({item["category"] for item in WATCHLIST})
+
+
+def add_stock(ticker, category):
+    WATCHLIST.append({"ticker": ticker.upper(), "category": category.lower()})

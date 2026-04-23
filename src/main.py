@@ -5,10 +5,13 @@ from watchlist import (
     get_ticker_symbols,
     get_stocks_by_category,
     get_categories,
+    add_stock,
 )
 
 
 def main():
+    add_stock("NVDA", "growth")
+
     print(f"{APP_NAME} v{VERSION}")
     print(f"Mode: {DEFAULT_MODE}")
 
