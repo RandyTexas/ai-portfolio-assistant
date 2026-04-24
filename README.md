@@ -1,5 +1,36 @@
 # AI Portfolio Assistant
 
-This project is being built inside a Linux VM for safe development, testing, backtesting, journaling, alerts, and paper trading.
+A beginner-friendly local Python project for building a personal AI finance and investing assistant.
 
-Version 1 starts with hand-picked stocks and a clean Python development environment.
+This current version is a **watchlist manager MVP** built inside a Linux VM for safe development. It does **not** place real trades and does **not** connect to brokers yet.
+
+## Current Features
+
+- Persistent watchlist saved to `data/watchlist.json`
+- View full watchlist
+- View available categories
+- Filter stocks by category
+- Look up a stock by ticker
+- Add a stock
+- Remove a stock
+- Show ticker symbols only
+
+## Current Project Structure
+
+```text
+ai-portfolio-assistant/
+├── data/
+│   └── watchlist.json
+├── docs/
+├── journals/
+├── reports/
+├── src/
+│   ├── config/
+│   │   └── settings.py
+│   ├── helpers.py
+│   ├── main.py
+│   └── watchlist.py
+├── tests/
+├── .gitignore
+├── README.md
+└── requirements.txt

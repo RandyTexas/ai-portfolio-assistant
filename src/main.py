@@ -1,41 +1,87 @@
 from config.settings import APP_NAME, VERSION, DEFAULT_MODE
-from helpers import display_watchlist
+from helpers import (
+    print_banner,
+    print_menu,
+    display_watchlist,
+    display_categories,
+    display_ticker_symbols,
+    display_stock_lookup,
+)
 from watchlist import (
-    WATCHLIST,
-    get_ticker_symbols,
-    get_stocks_by_category,
+    load_watchlist,
     get_categories,
-    has_ticker,
+    get_stocks_by_category,
     get_stock_by_ticker,
+    get_ticker_symbols,
+    add_stock,
+    remove_stock,
 )
 
 
 def main():
-    print(f"{APP_NAME} v{VERSION}")
-    print(f"Mode: {DEFAULT_MODE}")
+    print_banner(APP_NAME, VERSION, DEFAULT_MODE)
 
-    print("\nWatchlist checks:")
-    print(f"Has AAPL: {has_ticker('AAPL')}")
-    print(f"Has NVDA: {has_ticker('NVDA')}")
+    while True:
+        print_menu()
+        choice = input("\nChoose an option: ").strip()
 
-    print("\nSingle stock lookups:")
-    print(f"AAPL lookup: {get_stock_by_ticker('AAPL')}")
-    print(f"NVDA lookup: {get_stock_by_ticker('NVDA')}")
+        if choice == "1":
+            watchlist = load_watchlist()
+            display_watchlist(watchlist, "Current watchlist")
 
-    display_watchlist(WATCHLIST, "Current watchlist")
+        elif choice == "2":
+            categories = get_categories()
+            display_categories(categories)
 
-    print("\nAvailable categories:")
-    for category in get_categories():
-        print(f"- {category}")
+        elif choice == "3":
+            category = input("Enter category: ").strip().lower()
+            stocks = get_stocks_by_category(category)
+            display_watchlist(stocks, f"{category.title()} stocks")
 
-    print("\nTicker symbols only:")
-    for ticker in get_ticker_symbols():
-        print(f"- {ticker}")
+        elif choice == "4":
+            ticker = input("Enter ticker: ").strip().upper()
+            stock = get_stock_by_ticker(ticker)
+            display_stock_lookup(ticker, stock)
 
-    display_watchlist(get_stocks_by_category("growth"), "Growth stocks")
-    display_watchlist(get_stocks_by_category("dividend"), "Dividend stocks")
-    display_watchlist(get_stocks_by_category("reit"), "REIT stocks")
-    display_watchlist(get_stocks_by_category("etf"), "ETF stocks")
+        elif choice == "5":
+            ticker = input("Enter ticker to add: ").strip()
+            category = input("Enter category: ").strip()
+
+            if not ticker or not category:
+                print("Ticker and category are required.")
+                continue
+
+            success = add_stock(ticker, category)
+
+            if success:
+                print(f"Added {ticker.upper()} as {category.lower()}.")
+            else:
+                print(f"{ticker.upper()} is already in the watchlist.")
+
+        elif choice == "6":
+            ticker = input("Enter ticker to remove: ").strip()
+
+            if not ticker:
+                print("Ticker is required.")
+                continue
+
+            success = remove_stock(ticker)
+
+            if success:
+                print(f"Removed {ticker.upper()} from the watchlist.")
+            else:
+                print(f"{ticker.upper()} was not found in the watchlist.")
+
+        elif choice == "7":
+            symbols = get_ticker_symbols()
+            display_ticker_symbols(symbols)
+
+        elif choice == "0":
+            print("Exiting AI Portfolio Assistant.")
+            break
+
+        else:
+            print("Invalid option. Please choose a valid menu number.")
 
 
 if __name__ == "__main__":
