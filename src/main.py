@@ -7,6 +7,7 @@ from helpers import (
     display_ticker_symbols,
     display_stock_lookup,
 )
+from research.stock_research import build_basic_stock_report
 from watchlist import (
     load_watchlist,
     get_categories,
@@ -75,6 +76,19 @@ def main():
         elif choice == "7":
             symbols = get_ticker_symbols()
             display_ticker_symbols(symbols)
+
+        elif choice == "8":
+            ticker = input("Enter ticker for research: ").strip().upper()
+            report = build_basic_stock_report(ticker)
+
+            print("\nBasic stock research report:")
+            print(f"- ticker: {report['ticker']}")
+            print(f"- status: {report['status']}")
+            print(f"- summary: {report['summary']}")
+            print(f"- category_guess: {report['category_guess']}")
+            print("- notes:")
+            for note in report["notes"]:
+                print(f"  - {note}")
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")
