@@ -17,6 +17,7 @@ def print_menu():
     print("10. Paper buy test")
     print("11. Paper sell test")
     print("12. View paper portfolio summary")
+    print("13. View paper trade journal")
     print("0. Exit")
 
 
@@ -62,3 +63,19 @@ def display_stock_lookup(ticker, stock):
 
     print(f"- ticker: {stock['ticker']}")
     print(f"- category: {stock['category']}")
+
+
+def display_trade_history(trade_history):
+    print("\nPaper trade journal:")
+
+    if not trade_history:
+        print("- no trades recorded")
+        return
+
+    for index, trade in enumerate(trade_history, start=1):
+        print(
+            f"{index}. {trade['action']} {trade['ticker']} | "
+            f"shares={trade['shares']} | "
+            f"price={trade['price']:.2f} | "
+            f"total={trade['total']:.2f}"
+        )

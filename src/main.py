@@ -6,6 +6,7 @@ from helpers import (
     display_categories,
     display_ticker_symbols,
     display_stock_lookup,
+    display_trade_history,
 )
 from research.stock_research import build_basic_stock_report
 from strategy import get_strategy_profile
@@ -23,6 +24,7 @@ from paper_trading import (
     paper_buy,
     paper_sell,
     get_portfolio_summary,
+    get_trade_history,
 )
 
 
@@ -147,6 +149,10 @@ def main():
             print(f"- open_positions: {summary['position_count']}")
             print(f"- tickers_held: {summary['tickers']}")
             print(f"- trade_count: {summary['trade_count']}")
+
+        elif choice == "13":
+            trade_history = get_trade_history(portfolio)
+            display_trade_history(trade_history)
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")

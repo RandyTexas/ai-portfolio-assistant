@@ -99,3 +99,7 @@ def get_portfolio_summary(portfolio):
         "tickers": sorted(portfolio["positions"].keys()),
         "trade_count": len(portfolio["trade_history"]),
     }
+
+
+def get_trade_history(portfolio):
+    return portfolio["trade_history"]
