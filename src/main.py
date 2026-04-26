@@ -24,6 +24,8 @@ def main():
 
     while True:
         print_menu()
+       
+
         choice = input("\nChoose an option: ").strip()
 
         if choice == "1":
@@ -84,6 +86,7 @@ def main():
             print("\nBasic stock research report:")
             print(f"- ticker: {report['ticker']}")
             print(f"- status: {report['status']}")
+            print(f"- in_watchlist: {report['in_watchlist']}")
             print(f"- summary: {report['summary']}")
             print(f"- category_guess: {report['category_guess']}")
             print("- notes:")
