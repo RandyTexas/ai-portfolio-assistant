@@ -8,6 +8,7 @@ from helpers import (
     display_stock_lookup,
 )
 from research.stock_research import build_basic_stock_report
+from strategy import get_strategy_profile
 from watchlist import (
     load_watchlist,
     get_categories,
@@ -25,7 +26,6 @@ def main():
     while True:
         print_menu()
        
-
         choice = input("\nChoose an option: ").strip()
 
         if choice == "1":
@@ -92,6 +92,18 @@ def main():
             print("- notes:")
             for note in report["notes"]:
                 print(f"  - {note}")
+
+        elif choice == "9":
+            strategy_name = input("Enter strategy name (balanced/aggressive): ").strip().lower()
+            profile = get_strategy_profile(strategy_name)
+
+            if profile is None:
+                print("Strategy not found.")
+                continue
+
+            print(f"\nStrategy profile: {strategy_name}")
+            for key, value in profile.items():
+                print(f"- {key}: {value}")
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")
