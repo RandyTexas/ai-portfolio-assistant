@@ -13,6 +13,7 @@ def print_menu():
     print("6. Remove stock")
     print("7. Show ticker symbols only")
     print("8. Build basic stock research report")
+    print("9. View strategy profile")
     print("0. Exit")
 
 
