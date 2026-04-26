@@ -1,4 +1,3 @@
-from paper_trading import create_paper_portfolio, paper_buy, paper_sell
 from config.settings import APP_NAME, VERSION, DEFAULT_MODE
 from helpers import (
     print_banner,
@@ -19,16 +18,21 @@ from watchlist import (
     add_stock,
     remove_stock,
 )
+from paper_trading import (
+    create_paper_portfolio,
+    paper_buy,
+    paper_sell,
+    get_portfolio_summary,
+)
 
 
 def main():
     print_banner(APP_NAME, VERSION, DEFAULT_MODE)
     portfolio = create_paper_portfolio()
-    
 
     while True:
         print_menu()
-       
+
         choice = input("\nChoose an option: ").strip()
 
         if choice == "1":
@@ -115,8 +119,12 @@ def main():
 
             success, message = paper_buy(portfolio, ticker, float(price), int(shares))
             print(message)
-            print(f"Cash remaining: {portfolio['cash']:.2f}")
-            print(f"Positions: {portfolio['positions']}")
+
+            summary = get_portfolio_summary(portfolio)
+            print(f"Cash remaining: {summary['cash']:.2f}")
+            print(f"Open positions: {summary['position_count']}")
+            print(f"Tickers held: {summary['tickers']}")
+            print(f"Trade count: {summary['trade_count']}")
 
         elif choice == "11":
             ticker = input("Enter ticker to paper sell: ").strip().upper()
@@ -125,8 +133,20 @@ def main():
 
             success, message = paper_sell(portfolio, ticker, float(price), int(shares))
             print(message)
-            print(f"Cash remaining: {portfolio['cash']:.2f}")
-            print(f"Positions: {portfolio['positions']}")
+
+            summary = get_portfolio_summary(portfolio)
+            print(f"Cash remaining: {summary['cash']:.2f}")
+            print(f"Open positions: {summary['position_count']}")
+            print(f"Tickers held: {summary['tickers']}")
+            print(f"Trade count: {summary['trade_count']}")
+
+        elif choice == "12":
+            summary = get_portfolio_summary(portfolio)
+            print("\nPaper portfolio summary:")
+            print(f"- cash: {summary['cash']:.2f}")
+            print(f"- open_positions: {summary['position_count']}")
+            print(f"- tickers_held: {summary['tickers']}")
+            print(f"- trade_count: {summary['trade_count']}")
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")

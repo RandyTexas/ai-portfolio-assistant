@@ -90,3 +90,12 @@ def paper_sell(portfolio, ticker, price, shares):
         del portfolio["positions"][ticker]
 
     return True, f"Sold {shares} shares of {ticker} at {price:.2f}."
+
+
+def get_portfolio_summary(portfolio):
+    return {
+        "cash": round(portfolio["cash"], 2),
+        "position_count": len(portfolio["positions"]),
+        "tickers": sorted(portfolio["positions"].keys()),
+        "trade_count": len(portfolio["trade_history"]),
+    }
