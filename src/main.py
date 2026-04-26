@@ -10,6 +10,7 @@ from helpers import (
 )
 from research.stock_research import build_basic_stock_report
 from strategy import get_strategy_profile
+from strategy_rules import evaluate_trade_setup
 from watchlist import (
     load_watchlist,
     get_categories,
@@ -153,6 +154,27 @@ def main():
         elif choice == "13":
             trade_history = get_trade_history(portfolio)
             display_trade_history(trade_history)
+
+        elif choice == "14":
+            strategy_name = input("Enter strategy name (balanced/aggressive): ").strip().lower()
+            portfolio_cash = float(input("Enter portfolio cash: ").strip())
+            position_size_dollars = float(input("Enter position size in dollars: ").strip())
+            entry_price = float(input("Enter entry price: ").strip())
+            stop_loss_price = float(input("Enter stop loss price: ").strip())
+            take_profit_price = float(input("Enter take profit price: ").strip())
+
+            result = evaluate_trade_setup(
+                strategy_name=strategy_name,
+                portfolio_cash=portfolio_cash,
+                position_size_dollars=position_size_dollars,
+                entry_price=entry_price,
+                stop_loss_price=stop_loss_price,
+                take_profit_price=take_profit_price,
+            )
+
+            print("\nStrategy evaluation result:")
+            for key, value in result.items():
+                print(f"- {key}: {value}")
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")
