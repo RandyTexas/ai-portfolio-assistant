@@ -1,3 +1,4 @@
+from paper_trading import create_paper_portfolio, paper_buy, paper_sell
 from config.settings import APP_NAME, VERSION, DEFAULT_MODE
 from helpers import (
     print_banner,
@@ -22,6 +23,8 @@ from watchlist import (
 
 def main():
     print_banner(APP_NAME, VERSION, DEFAULT_MODE)
+    portfolio = create_paper_portfolio()
+    
 
     while True:
         print_menu()
@@ -104,6 +107,26 @@ def main():
             print(f"\nStrategy profile: {strategy_name}")
             for key, value in profile.items():
                 print(f"- {key}: {value}")
+
+        elif choice == "10":
+            ticker = input("Enter ticker to paper buy: ").strip().upper()
+            price = input("Enter buy price: ").strip()
+            shares = input("Enter number of shares: ").strip()
+
+            success, message = paper_buy(portfolio, ticker, float(price), int(shares))
+            print(message)
+            print(f"Cash remaining: {portfolio['cash']:.2f}")
+            print(f"Positions: {portfolio['positions']}")
+
+        elif choice == "11":
+            ticker = input("Enter ticker to paper sell: ").strip().upper()
+            price = input("Enter sell price: ").strip()
+            shares = input("Enter number of shares: ").strip()
+
+            success, message = paper_sell(portfolio, ticker, float(price), int(shares))
+            print(message)
+            print(f"Cash remaining: {portfolio['cash']:.2f}")
+            print(f"Positions: {portfolio['positions']}")
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")
