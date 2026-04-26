@@ -1,113 +1,71 @@
 import json
+from copy import deepcopy
 
 import watchlist
+from config.settings import DEFAULT_WATCHLIST
 
 
-def test_has_ticker_finds_existing_stock():
+def reset_watchlist_file():
+    watchlist.save_watchlist(deepcopy(DEFAULT_WATCHLIST))
+
+
+def test_get_ticker_symbols():
+    reset_watchlist_file()
+    symbols = watchlist.get_ticker_symbols()
+    assert symbols == ["AAPL", "MSFT", "KO", "O", "SPY"]
+
+
+def test_has_ticker():
+    reset_watchlist_file()
     assert watchlist.has_ticker("AAPL") is True
-
-
-def test_has_ticker_returns_false_for_missing_stock():
     assert watchlist.has_ticker("NVDA") is False
 
 
-def test_get_stock_by_ticker_returns_stock_item():
+def test_get_stock_by_ticker():
+    reset_watchlist_file()
     stock = watchlist.get_stock_by_ticker("KO")
     assert stock == {"ticker": "KO", "category": "dividend"}
-
-
-def test_get_stock_by_ticker_returns_none_for_missing_stock():
     assert watchlist.get_stock_by_ticker("NVDA") is None
 
 
-def test_get_categories_returns_expected_categories():
+def test_get_stocks_by_category():
+    reset_watchlist_file()
+    growth_stocks = watchlist.get_stocks_by_category("growth")
+    assert growth_stocks == [
+        {"ticker": "AAPL", "category": "growth"},
+        {"ticker": "MSFT", "category": "growth"},
+    ]
+
+
+def test_add_stock():
+    reset_watchlist_file()
+    added = watchlist.add_stock("NVDA", "growth")
+    assert added is True
+    assert watchlist.has_ticker("NVDA") is True
+
+
+def test_add_stock_blocks_duplicates():
+    reset_watchlist_file()
+    first_add = watchlist.add_stock("NVDA", "growth")
+    second_add = watchlist.add_stock("NVDA", "growth")
+    assert first_add is True
+    assert second_add is False
+
+
+def test_remove_stock():
+    reset_watchlist_file()
+    removed = watchlist.remove_stock("KO")
+    assert removed is True
+    assert watchlist.has_ticker("KO") is False
+
+
+def test_remove_stock_returns_false_for_missing_ticker():
+    reset_watchlist_file()
+    removed = watchlist.remove_stock("NVDA")
+    assert removed is False
+
+
+def test_get_categories():
+    reset_watchlist_file()
     categories = watchlist.get_categories()
-    assert "growth" in categories
-    assert "dividend" in categories
-    assert "reit" in categories
-    assert "etf" in categories
-
-
-def test_add_stock_adds_new_stock(tmp_path, monkeypatch):
-    test_file = tmp_path / "watchlist.json"
-    test_data_dir = tmp_path / "data"
-
-    monkeypatch.setattr(watchlist, "WATCHLIST_FILE", test_file)
-    monkeypatch.setattr(watchlist, "DATA_DIR", test_data_dir)
-
-    watchlist.save_watchlist(
-        [
-            {"ticker": "AAPL", "category": "growth"},
-            {"ticker": "KO", "category": "dividend"},
-        ]
-    )
-
-    result = watchlist.add_stock("NVDA", "growth")
-    loaded = watchlist.load_watchlist()
-
-    assert result is True
-    assert {"ticker": "NVDA", "category": "growth"} in loaded
-
-
-def test_add_stock_blocks_duplicate(tmp_path, monkeypatch):
-    test_file = tmp_path / "watchlist.json"
-    test_data_dir = tmp_path / "data"
-
-    monkeypatch.setattr(watchlist, "WATCHLIST_FILE", test_file)
-    monkeypatch.setattr(watchlist, "DATA_DIR", test_data_dir)
-
-    watchlist.save_watchlist(
-        [
-            {"ticker": "AAPL", "category": "growth"},
-            {"ticker": "KO", "category": "dividend"},
-        ]
-    )
-
-    result = watchlist.add_stock("AAPL", "growth")
-    loaded = watchlist.load_watchlist()
-
-    assert result is False
-    assert len([item for item in loaded if item["ticker"] == "AAPL"]) == 1
-
-
-def test_remove_stock_removes_existing_stock(tmp_path, monkeypatch):
-    test_file = tmp_path / "watchlist.json"
-    test_data_dir = tmp_path / "data"
-
-    monkeypatch.setattr(watchlist, "WATCHLIST_FILE", test_file)
-    monkeypatch.setattr(watchlist, "DATA_DIR", test_data_dir)
-
-    watchlist.save_watchlist(
-        [
-            {"ticker": "AAPL", "category": "growth"},
-            {"ticker": "KO", "category": "dividend"},
-        ]
-    )
-
-    result = watchlist.remove_stock("KO")
-    loaded = watchlist.load_watchlist()
-
-    assert result is True
-    assert {"ticker": "KO", "category": "dividend"} not in loaded
-
-
-def test_remove_stock_returns_false_for_missing_stock(tmp_path, monkeypatch):
-    test_file = tmp_path / "watchlist.json"
-    test_data_dir = tmp_path / "data"
-
-    monkeypatch.setattr(watchlist, "WATCHLIST_FILE", test_file)
-    monkeypatch.setattr(watchlist, "DATA_DIR", test_data_dir)
-
-    watchlist.save_watchlist(
-        [
-            {"ticker": "AAPL", "category": "growth"},
-            {"ticker": "KO", "category": "dividend"},
-        ]
-    )
-
-    result = watchlist.remove_stock("NVDA")
-    loaded = watchlist.load_watchlist()
-
-    assert result is False
-    assert {"ticker": "AAPL", "category": "growth"} in loaded
-    assert {"ticker": "KO", "category": "dividend"} in loaded
+    assert categories == ["dividend", "etf", "growth", "reit"]
