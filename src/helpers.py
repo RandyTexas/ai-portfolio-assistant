@@ -16,6 +16,7 @@ def print_menu():
     print("9. View strategy profile")
     print("10. Paper buy test")
     print("11. Paper sell test")
+    print("12. View paper portfolio summary")
     print("0. Exit")
 
 
