@@ -8,9 +8,16 @@ from helpers import (
     display_stock_lookup,
     display_trade_history,
 )
+from paper_trading import (
+    create_paper_portfolio,
+    paper_buy,
+    paper_sell,
+    get_portfolio_summary,
+    get_trade_history,
+)
 from research.stock_research import build_basic_stock_report
 from strategy import get_strategy_profile
-from strategy_rules import evaluate_trade_setup
+from trade_decision import evaluate_paper_trade_decision
 from watchlist import (
     load_watchlist,
     get_categories,
@@ -19,13 +26,6 @@ from watchlist import (
     get_ticker_symbols,
     add_stock,
     remove_stock,
-)
-from paper_trading import (
-    create_paper_portfolio,
-    paper_buy,
-    paper_sell,
-    get_portfolio_summary,
-    get_trade_history,
 )
 
 
@@ -156,6 +156,8 @@ def main():
             display_trade_history(trade_history)
 
         elif choice == "14":
+            from strategy_rules import evaluate_trade_setup
+
             strategy_name = input("Enter strategy name (balanced/aggressive): ").strip().lower()
             portfolio_cash = float(input("Enter portfolio cash: ").strip())
             position_size_dollars = float(input("Enter position size in dollars: ").strip())
@@ -173,6 +175,27 @@ def main():
             )
 
             print("\nStrategy evaluation result:")
+            for key, value in result.items():
+                print(f"- {key}: {value}")
+
+        elif choice == "15":
+            strategy_name = input("Enter strategy name (balanced/aggressive): ").strip().lower()
+            portfolio_cash = float(input("Enter portfolio cash: ").strip())
+            position_size_dollars = float(input("Enter position size in dollars: ").strip())
+            entry_price = float(input("Enter entry price: ").strip())
+            stop_loss_price = float(input("Enter stop loss price: ").strip())
+            take_profit_price = float(input("Enter take profit price: ").strip())
+
+            result = evaluate_paper_trade_decision(
+                strategy_name=strategy_name,
+                portfolio_cash=portfolio_cash,
+                position_size_dollars=position_size_dollars,
+                entry_price=entry_price,
+                stop_loss_price=stop_loss_price,
+                take_profit_price=take_profit_price,
+            )
+
+            print("\nPaper trade decision result:")
             for key, value in result.items():
                 print(f"- {key}: {value}")
 
