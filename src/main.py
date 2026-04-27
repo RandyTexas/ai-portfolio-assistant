@@ -17,7 +17,9 @@ from paper_trading import (
 )
 from research.stock_research import build_basic_stock_report
 from strategy import get_strategy_profile
+from strategy_rules import evaluate_trade_setup
 from trade_decision import evaluate_paper_trade_decision
+from trade_execution import execute_paper_trade
 from watchlist import (
     load_watchlist,
     get_categories,
@@ -156,8 +158,6 @@ def main():
             display_trade_history(trade_history)
 
         elif choice == "14":
-            from strategy_rules import evaluate_trade_setup
-
             strategy_name = input("Enter strategy name (balanced/aggressive): ").strip().lower()
             portfolio_cash = float(input("Enter portfolio cash: ").strip())
             position_size_dollars = float(input("Enter position size in dollars: ").strip())
@@ -198,6 +198,38 @@ def main():
             print("\nPaper trade decision result:")
             for key, value in result.items():
                 print(f"- {key}: {value}")
+
+        elif choice == "16":
+            ticker = input("Enter ticker: ").strip().upper()
+            strategy_name = input("Enter strategy name (balanced/aggressive): ").strip().lower()
+            position_size_dollars = float(input("Enter position size in dollars: ").strip())
+            entry_price = float(input("Enter entry price: ").strip())
+            stop_loss_price = float(input("Enter stop loss price: ").strip())
+            take_profit_price = float(input("Enter take profit price: ").strip())
+
+            summary = get_portfolio_summary(portfolio)
+
+            result = execute_paper_trade(
+                portfolio=portfolio,
+                ticker=ticker,
+                strategy_name=strategy_name,
+                portfolio_cash=summary["cash"],
+                position_size_dollars=position_size_dollars,
+                entry_price=entry_price,
+                stop_loss_price=stop_loss_price,
+                take_profit_price=take_profit_price,
+            )
+
+            print("\nPaper trade execution result:")
+            for key, value in result.items():
+                print(f"- {key}: {value}")
+
+            updated_summary = get_portfolio_summary(portfolio)
+            print("\nUpdated portfolio summary:")
+            print(f"- cash: {updated_summary['cash']:.2f}")
+            print(f"- open_positions: {updated_summary['position_count']}")
+            print(f"- tickers_held: {updated_summary['tickers']}")
+            print(f"- trade_count: {updated_summary['trade_count']}")
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")

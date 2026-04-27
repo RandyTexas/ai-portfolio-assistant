@@ -20,6 +20,7 @@ def print_menu():
     print("13. View paper trade journal")
     print("14. Evaluate strategy trade setup")
     print("15. Evaluate paper trade decision")
+    print("16. Execute paper trade from strategy")
     print("0. Exit")
 
 
