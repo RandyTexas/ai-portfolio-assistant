@@ -61,4 +61,3 @@ def test_execute_paper_trade_rejects_too_small_position_size():
     assert result["reason"] == "Position size is too small to buy at least 1 share."
     assert portfolio["cash"] == 10000.0
     assert portfolio["positions"] == {}
-    
