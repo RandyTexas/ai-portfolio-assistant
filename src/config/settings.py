@@ -8,6 +8,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = PROJECT_ROOT / "data"
 WATCHLIST_FILE = DATA_DIR / "watchlist.json"
 CHANGE_REQUESTS_FILE = DATA_DIR / "change_requests.json"
+IMPLEMENTATION_QUEUE_FILE = DATA_DIR / "implementation_queue.json"
 
 DEFAULT_WATCHLIST = [
     {"ticker": "AAPL", "category": "growth"},

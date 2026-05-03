@@ -34,6 +34,8 @@ def print_menu():
     print("27. View AI Builder change requests")
     print("28. Update AI Builder request status")
     print("29. View approved AI Builder requests")
+    print("30. Add approved request to implementation queue")
+    print("31. View implementation queue")
     print("0. Exit")
 
 
@@ -111,3 +113,19 @@ def display_change_requests(requests):
         )
         print(f"   request: {item['request_text']}")
         print(f"   created_at: {item['created_at']}")
+
+
+def display_implementation_queue(queue_items):
+    print("\nImplementation queue:")
+
+    if not queue_items:
+        print("- no queued items")
+        return
+
+    for item in queue_items:
+        print(
+            f"{item['queue_id']}. request_id={item['request_id']} "
+            f"[{item['queue_status']}] {item['title']} | priority={item['priority']}"
+        )
+        print(f"   request: {item['request_text']}")
+        print(f"   queued_at: {item['queued_at']}")
