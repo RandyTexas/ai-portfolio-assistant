@@ -242,26 +242,12 @@ def main():
             current_price = float(input("Enter current price: ").strip())
             highest_price = float(input("Enter highest price reached: ").strip())
 
-            take_profit_pct_input = input(
-                "Enter take profit % as decimal or leave blank (example 0.04): "
-            ).strip()
-            take_profit_price_input = input(
-                "Enter take profit price or leave blank (example 110): "
-            ).strip()
-
-            stop_loss_pct_input = input(
-                "Enter stop loss % as decimal or leave blank (example 0.05): "
-            ).strip()
-            stop_loss_price_input = input(
-                "Enter stop loss price or leave blank (example 95): "
-            ).strip()
-
-            trailing_stop_pct_input = input(
-                "Enter trailing stop % as decimal or leave blank (example 0.04): "
-            ).strip()
-            trailing_stop_amount_input = input(
-                "Enter trailing stop dollar amount from peak or leave blank (example 5): "
-            ).strip()
+            take_profit_pct_input = input("Enter take profit % as decimal or leave blank (example 0.04): ").strip()
+            take_profit_price_input = input("Enter take profit price or leave blank (example 110): ").strip()
+            stop_loss_pct_input = input("Enter stop loss % as decimal or leave blank (example 0.05): ").strip()
+            stop_loss_price_input = input("Enter stop loss price or leave blank (example 95): ").strip()
+            trailing_stop_pct_input = input("Enter trailing stop % as decimal or leave blank (example 0.04): ").strip()
+            trailing_stop_amount_input = input("Enter trailing stop dollar amount from peak or leave blank (example 5): ").strip()
 
             result = evaluate_exit_rules(
                 entry_price=entry_price,
@@ -300,26 +286,12 @@ def main():
             current_price = float(input("Enter current price: ").strip())
             highest_price = float(input("Enter highest price reached: ").strip())
 
-            take_profit_pct_input = input(
-                "Enter take profit % as decimal or leave blank (example 0.04): "
-            ).strip()
-            take_profit_price_input = input(
-                "Enter take profit price or leave blank (example 110): "
-            ).strip()
-
-            stop_loss_pct_input = input(
-                "Enter stop loss % as decimal or leave blank (example 0.05): "
-            ).strip()
-            stop_loss_price_input = input(
-                "Enter stop loss price or leave blank (example 95): "
-            ).strip()
-
-            trailing_stop_pct_input = input(
-                "Enter trailing stop % as decimal or leave blank (example 0.04): "
-            ).strip()
-            trailing_stop_amount_input = input(
-                "Enter trailing stop dollar amount from peak or leave blank (example 5): "
-            ).strip()
+            take_profit_pct_input = input("Enter take profit % as decimal or leave blank (example 0.04): ").strip()
+            take_profit_price_input = input("Enter take profit price or leave blank (example 110): ").strip()
+            stop_loss_pct_input = input("Enter stop loss % as decimal or leave blank (example 0.05): ").strip()
+            stop_loss_price_input = input("Enter stop loss price or leave blank (example 95): ").strip()
+            trailing_stop_pct_input = input("Enter trailing stop % as decimal or leave blank (example 0.04): ").strip()
+            trailing_stop_amount_input = input("Enter trailing stop dollar amount from peak or leave blank (example 5): ").strip()
 
             result = evaluate_position_exit(
                 portfolio=portfolio,
@@ -343,26 +315,12 @@ def main():
             current_price = float(input("Enter current price: ").strip())
             highest_price = float(input("Enter highest price reached: ").strip())
 
-            take_profit_pct_input = input(
-                "Enter take profit % as decimal or leave blank (example 0.04): "
-            ).strip()
-            take_profit_price_input = input(
-                "Enter take profit price or leave blank (example 110): "
-            ).strip()
-
-            stop_loss_pct_input = input(
-                "Enter stop loss % as decimal or leave blank (example 0.05): "
-            ).strip()
-            stop_loss_price_input = input(
-                "Enter stop loss price or leave blank (example 95): "
-            ).strip()
-
-            trailing_stop_pct_input = input(
-                "Enter trailing stop % as decimal or leave blank (example 0.04): "
-            ).strip()
-            trailing_stop_amount_input = input(
-                "Enter trailing stop dollar amount from peak or leave blank (example 5): "
-            ).strip()
+            take_profit_pct_input = input("Enter take profit % as decimal or leave blank (example 0.04): ").strip()
+            take_profit_price_input = input("Enter take profit price or leave blank (example 110): ").strip()
+            stop_loss_pct_input = input("Enter stop loss % as decimal or leave blank (example 0.05): ").strip()
+            stop_loss_price_input = input("Enter stop loss price or leave blank (example 95): ").strip()
+            trailing_stop_pct_input = input("Enter trailing stop % as decimal or leave blank (example 0.04): ").strip()
+            trailing_stop_amount_input = input("Enter trailing stop dollar amount from peak or leave blank (example 5): ").strip()
 
             result = execute_auto_exit(
                 portfolio=portfolio,
@@ -405,15 +363,9 @@ def main():
                 print(f"- {key}: {value}")
 
         elif choice == "22":
-            risk_profile_name = input(
-                "Enter risk profile name (passive/balanced/aggressive): "
-            ).strip().lower()
-            trade_style_name = input(
-                "Enter trade-style name (quick_trade/short_hold) or leave blank: "
-            ).strip().lower()
-            ticker = input(
-                "Enter ticker for override check or leave blank: "
-            ).strip().upper()
+            risk_profile_name = input("Enter risk profile name (passive/balanced/aggressive): ").strip().lower()
+            trade_style_name = input("Enter trade-style name (quick_trade/short_hold) or leave blank: ").strip().lower()
+            ticker = input("Enter ticker for override check or leave blank: ").strip().upper()
 
             rules = build_effective_rules(
                 risk_profile_name=risk_profile_name,
