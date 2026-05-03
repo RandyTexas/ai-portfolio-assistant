@@ -1,5 +1,6 @@
 from auto_exit import execute_auto_exit
 from config.settings import APP_NAME, VERSION, DEFAULT_MODE
+from effective_rules import build_effective_rules
 from exit_rules import evaluate_exit_rules
 from helpers import (
     print_banner,
@@ -401,6 +402,34 @@ def main():
 
             print(f"\nTrade-style matrix profile: {profile_name}")
             for key, value in profile.items():
+                print(f"- {key}: {value}")
+
+        elif choice == "22":
+            risk_profile_name = input(
+                "Enter risk profile name (passive/balanced/aggressive): "
+            ).strip().lower()
+            trade_style_name = input(
+                "Enter trade-style name (quick_trade/short_hold) or leave blank: "
+            ).strip().lower()
+            ticker = input(
+                "Enter ticker for override check or leave blank: "
+            ).strip().upper()
+
+            rules = build_effective_rules(
+                risk_profile_name=risk_profile_name,
+                trade_style_name=trade_style_name if trade_style_name else None,
+                ticker=ticker if ticker else None,
+            )
+
+            if rules is None:
+                print("Could not build effective rules. Check your profile/style names.")
+                continue
+
+            print("\nMerged effective rules:")
+            print(f"- risk_profile: {risk_profile_name}")
+            print(f"- trade_style: {trade_style_name if trade_style_name else 'none'}")
+            print(f"- ticker: {ticker if ticker else 'none'}")
+            for key, value in rules.items():
                 print(f"- {key}: {value}")
 
         elif choice == "0":
