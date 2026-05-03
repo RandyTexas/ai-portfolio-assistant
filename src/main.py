@@ -1,3 +1,4 @@
+from ai_builder import create_change_request, load_change_requests, update_change_request_status
 from ai_builder import create_change_request, load_change_requests
 from auto_exit import execute_auto_exit
 from config.settings import APP_NAME, VERSION, DEFAULT_MODE
@@ -484,6 +485,25 @@ def main():
         elif choice == "27":
             requests = load_change_requests()
             display_change_requests(requests)
+
+        elif choice == "28":
+            try:
+                request_id = int(input("Enter request ID to update: ").strip())
+            except ValueError:
+                print("Request ID must be a number.")
+                continue
+
+            new_status = input("Enter new status (open/approved/closed): ").strip().lower()
+
+            updated_request = update_change_request_status(request_id, new_status)
+
+            if updated_request is None:
+                print("Could not update request. Check the ID and status.")
+                continue
+
+            print("\nUpdated AI Builder request:")
+            for key, value in updated_request.items():
+                print(f"- {key}: {value}")
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")

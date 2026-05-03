@@ -32,6 +32,7 @@ def print_menu():
     print("25. Evaluate open position using merged effective rules")
     print("26. Create AI Builder change request")
     print("27. View AI Builder change requests")
+    print("28. Update AI Builder request status")
     print("0. Exit")
 
 

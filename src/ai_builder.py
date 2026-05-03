@@ -47,3 +47,19 @@ def create_change_request(title, request_text, priority="normal"):
 def get_open_change_requests():
     requests = load_change_requests()
     return [item for item in requests if item["status"] == "open"]
+
+
+def update_change_request_status(request_id, new_status):
+    requests = load_change_requests()
+    allowed_statuses = {"open", "approved", "closed"}
+
+    if new_status not in allowed_statuses:
+        return None
+
+    for item in requests:
+        if item["id"] == request_id:
+            item["status"] = new_status
+            save_change_requests(requests)
+            return item
+
+    return None
