@@ -27,6 +27,7 @@ def print_menu():
     print("20. Execute paper auto-sell from exit rules")
     print("21. View trade-style matrix profile")
     print("22. View merged effective rules")
+    print("23. Evaluate trade using merged effective rules")
     print("0. Exit")
 
 

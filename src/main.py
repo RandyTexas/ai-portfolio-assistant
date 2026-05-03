@@ -11,6 +11,7 @@ from helpers import (
     display_stock_lookup,
     display_trade_history,
 )
+from merged_trade_decision import evaluate_trade_with_effective_rules
 from paper_trading import (
     create_paper_portfolio,
     paper_buy,
@@ -382,6 +383,27 @@ def main():
             print(f"- trade_style: {trade_style_name if trade_style_name else 'none'}")
             print(f"- ticker: {ticker if ticker else 'none'}")
             for key, value in rules.items():
+                print(f"- {key}: {value}")
+
+        elif choice == "23":
+            risk_profile_name = input("Enter risk profile name (passive/balanced/aggressive): ").strip().lower()
+            trade_style_name = input("Enter trade-style name (quick_trade/short_hold) or leave blank: ").strip().lower()
+            ticker = input("Enter ticker for override check or leave blank: ").strip().upper()
+            portfolio_cash = float(input("Enter portfolio cash: ").strip())
+            position_size_dollars = float(input("Enter position size in dollars: ").strip())
+            entry_price = float(input("Enter entry price: ").strip())
+
+            result = evaluate_trade_with_effective_rules(
+                risk_profile_name=risk_profile_name,
+                trade_style_name=trade_style_name if trade_style_name else None,
+                ticker=ticker if ticker else None,
+                portfolio_cash=portfolio_cash,
+                position_size_dollars=position_size_dollars,
+                entry_price=entry_price,
+            )
+
+            print("\nMerged-rule trade decision result:")
+            for key, value in result.items():
                 print(f"- {key}: {value}")
 
         elif choice == "0":
