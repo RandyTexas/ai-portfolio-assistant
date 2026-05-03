@@ -1,3 +1,4 @@
+from ai_builder import create_change_request, load_change_requests
 from auto_exit import execute_auto_exit
 from config.settings import APP_NAME, VERSION, DEFAULT_MODE
 from effective_rules import build_effective_rules
@@ -456,6 +457,32 @@ def main():
             print("\nMerged-rule position exit result:")
             for key, value in result.items():
                 print(f"- {key}: {value}")
+
+        elif choice == "26":
+            title = input("Enter short title for the change request: ").strip()
+            request_text = input("Enter the change you want the AI Builder to make: ").strip()
+            priority = input("Enter priority (low/normal/high): ").strip().lower()
+
+            if not title or not request_text:
+                print("Title and request text are required.")
+                continue
+
+            if priority not in {"low", "normal", "high"}:
+                priority = "normal"
+
+            new_request = create_change_request(
+                title=title,
+                request_text=request_text,
+                priority=priority,
+            )
+
+            print("\nSaved AI Builder request:")
+            for key, value in new_request.items():
+                print(f"- {key}: {value}")
+
+        elif choice == "27":
+            requests = load_change_requests()
+            display_change_requests(requests)
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")

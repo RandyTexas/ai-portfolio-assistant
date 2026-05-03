@@ -30,6 +30,8 @@ def print_menu():
     print("23. Evaluate trade using merged effective rules")
     print("24. Execute paper trade using merged effective rules")
     print("25. Evaluate open position using merged effective rules")
+    print("26. Create AI Builder change request")
+    print("27. View AI Builder change requests")
     print("0. Exit")
 
 
@@ -91,3 +93,19 @@ def display_trade_history(trade_history):
             f"price={trade['price']:.2f} | "
             f"total={trade['total']:.2f}"
         )
+
+
+def display_change_requests(requests):
+    print("\nAI Builder change requests:")
+
+    if not requests:
+        print("- no requests saved")
+        return
+
+    for item in requests:
+        print(
+            f"{item['id']}. [{item['status']}] "
+            f"{item['title']} | priority={item['priority']}"
+        )
+        print(f"   request: {item['request_text']}")
+        print(f"   created_at: {item['created_at']}")
