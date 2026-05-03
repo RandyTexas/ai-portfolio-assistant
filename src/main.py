@@ -4,7 +4,11 @@ from ai_builder import (
     update_change_request_status,
     get_approved_change_requests,
 )
-from implementation_queue import add_approved_request_to_queue, load_implementation_queue
+from implementation_queue import (
+    add_approved_request_to_queue,
+    load_implementation_queue,
+    update_queue_item_status,
+)
 from auto_exit import execute_auto_exit
 from config.settings import APP_NAME, VERSION, DEFAULT_MODE
 from effective_rules import build_effective_rules
@@ -535,6 +539,27 @@ def main():
         elif choice == "31":
             queue_items = load_implementation_queue()
             display_implementation_queue(queue_items)
+
+        elif choice == "32":
+            try:
+                queue_id = int(input("Enter queue ID to update: ").strip())
+            except ValueError:
+                print("Queue ID must be a number.")
+                continue
+
+            new_status = input(
+                "Enter new queue status (ready/in_progress/completed): "
+            ).strip().lower()
+
+            updated_item = update_queue_item_status(queue_id, new_status)
+
+            if updated_item is None:
+                print("Could not update queue item. Check the queue ID and status.")
+                continue
+
+            print("\nUpdated implementation queue item:")
+            for key, value in updated_item.items():
+                print(f"- {key}: {value}")
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")

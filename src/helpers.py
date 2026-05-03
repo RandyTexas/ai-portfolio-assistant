@@ -36,6 +36,7 @@ def print_menu():
     print("29. View approved AI Builder requests")
     print("30. Add approved request to implementation queue")
     print("31. View implementation queue")
+    print("32. Update implementation queue status")
     print("0. Exit")
 
 

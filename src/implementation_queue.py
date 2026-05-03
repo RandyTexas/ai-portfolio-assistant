@@ -56,3 +56,19 @@ def add_approved_request_to_queue(request_id):
             return queue_item
 
     return None
+
+
+def update_queue_item_status(queue_id, new_status):
+    queue_items = load_implementation_queue()
+    allowed_statuses = {"ready", "in_progress", "completed"}
+
+    if new_status not in allowed_statuses:
+        return None
+
+    for item in queue_items:
+        if item["queue_id"] == queue_id:
+            item["queue_status"] = new_status
+            save_implementation_queue(queue_items)
+            return item
+
+    return None
