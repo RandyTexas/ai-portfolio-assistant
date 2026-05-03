@@ -49,6 +49,11 @@ def get_open_change_requests():
     return [item for item in requests if item["status"] == "open"]
 
 
+def get_approved_change_requests():
+    requests = load_change_requests()
+    return [item for item in requests if item["status"] == "approved"]
+
+
 def update_change_request_status(request_id, new_status):
     requests = load_change_requests()
     allowed_statuses = {"open", "approved", "closed"}

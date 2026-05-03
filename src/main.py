@@ -1,5 +1,9 @@
-from ai_builder import create_change_request, load_change_requests, update_change_request_status
-from ai_builder import create_change_request, load_change_requests
+from ai_builder import (
+    create_change_request,
+    load_change_requests,
+    update_change_request_status,
+    get_approved_change_requests,
+)
 from auto_exit import execute_auto_exit
 from config.settings import APP_NAME, VERSION, DEFAULT_MODE
 from effective_rules import build_effective_rules
@@ -504,6 +508,10 @@ def main():
             print("\nUpdated AI Builder request:")
             for key, value in updated_request.items():
                 print(f"- {key}: {value}")
+
+        elif choice == "29":
+            approved_requests = get_approved_change_requests()
+            display_change_requests(approved_requests)
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")

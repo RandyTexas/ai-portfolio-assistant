@@ -33,6 +33,7 @@ def print_menu():
     print("26. Create AI Builder change request")
     print("27. View AI Builder change requests")
     print("28. Update AI Builder request status")
+    print("29. View approved AI Builder requests")
     print("0. Exit")
 
 
