@@ -4,6 +4,7 @@ from ai_builder import (
     update_change_request_status,
     get_approved_change_requests,
 )
+from implementation_queue import add_approved_request_to_queue, load_implementation_queue
 from auto_exit import execute_auto_exit
 from config.settings import APP_NAME, VERSION, DEFAULT_MODE
 from effective_rules import build_effective_rules
@@ -17,6 +18,7 @@ from helpers import (
     display_stock_lookup,
     display_trade_history,
     display_change_requests,
+    display_implementation_queue,
 )
 from merged_position_exit import evaluate_position_with_effective_rules
 from merged_trade_decision import evaluate_trade_with_effective_rules
@@ -512,6 +514,27 @@ def main():
         elif choice == "29":
             approved_requests = get_approved_change_requests()
             display_change_requests(approved_requests)
+
+        elif choice == "30":
+            try:
+                request_id = int(input("Enter approved request ID to queue: ").strip())
+            except ValueError:
+                print("Request ID must be a number.")
+                continue
+
+            queue_item = add_approved_request_to_queue(request_id)
+
+            if queue_item is None:
+                print("Could not queue request. Make sure it exists, is approved, and is not already queued.")
+                continue
+
+            print("\nQueued implementation item:")
+            for key, value in queue_item.items():
+                print(f"- {key}: {value}")
+
+        elif choice == "31":
+            queue_items = load_implementation_queue()
+            display_implementation_queue(queue_items)
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")
