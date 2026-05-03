@@ -20,6 +20,7 @@ from paper_trading import (
 from position_exit import evaluate_position_exit
 from research.stock_research import build_basic_stock_report
 from strategy import get_strategy_profile
+from strategy_matrix import get_matrix_profile, list_matrix_profiles
 from strategy_overrides import get_effective_strategy
 from strategy_rules import evaluate_trade_setup
 from trade_decision import evaluate_paper_trade_decision
@@ -110,14 +111,14 @@ def main():
                 print(f"  - {note}")
 
         elif choice == "9":
-            strategy_name = input("Enter strategy name (balanced/aggressive): ").strip().lower()
+            strategy_name = input("Enter risk profile name (passive/balanced/aggressive): ").strip().lower()
             profile = get_strategy_profile(strategy_name)
 
             if profile is None:
-                print("Strategy not found.")
+                print("Risk profile not found.")
                 continue
 
-            print(f"\nStrategy profile: {strategy_name}")
+            print(f"\nRisk profile: {strategy_name}")
             for key, value in profile.items():
                 print(f"- {key}: {value}")
 
@@ -162,7 +163,7 @@ def main():
             display_trade_history(trade_history)
 
         elif choice == "14":
-            strategy_name = input("Enter strategy name (balanced/aggressive): ").strip().lower()
+            strategy_name = input("Enter risk profile name (passive/balanced/aggressive): ").strip().lower()
             portfolio_cash = float(input("Enter portfolio cash: ").strip())
             position_size_dollars = float(input("Enter position size in dollars: ").strip())
             entry_price = float(input("Enter entry price: ").strip())
@@ -183,7 +184,7 @@ def main():
                 print(f"- {key}: {value}")
 
         elif choice == "15":
-            strategy_name = input("Enter strategy name (balanced/aggressive): ").strip().lower()
+            strategy_name = input("Enter risk profile name (passive/balanced/aggressive): ").strip().lower()
             portfolio_cash = float(input("Enter portfolio cash: ").strip())
             position_size_dollars = float(input("Enter position size in dollars: ").strip())
             entry_price = float(input("Enter entry price: ").strip())
@@ -205,7 +206,7 @@ def main():
 
         elif choice == "16":
             ticker = input("Enter ticker: ").strip().upper()
-            strategy_name = input("Enter strategy name (balanced/aggressive): ").strip().lower()
+            strategy_name = input("Enter risk profile name (passive/balanced/aggressive): ").strip().lower()
             position_size_dollars = float(input("Enter position size in dollars: ").strip())
             entry_price = float(input("Enter entry price: ").strip())
             stop_loss_price = float(input("Enter stop loss price: ").strip())
@@ -278,7 +279,7 @@ def main():
                 print(f"- {key}: {value}")
 
         elif choice == "18":
-            strategy_name = input("Enter strategy name (balanced/aggressive): ").strip().lower()
+            strategy_name = input("Enter risk profile name (passive/balanced/aggressive): ").strip().lower()
             ticker = input("Enter ticker for override check (or leave blank): ").strip().upper()
 
             profile = get_effective_strategy(strategy_name, ticker if ticker else None)
@@ -385,6 +386,22 @@ def main():
             print(f"- open_positions: {updated_summary['position_count']}")
             print(f"- tickers_held: {updated_summary['tickers']}")
             print(f"- trade_count: {updated_summary['trade_count']}")
+
+        elif choice == "21":
+            print("\nAvailable trade-style matrix profiles:")
+            for name in list_matrix_profiles():
+                print(f"- {name}")
+
+            profile_name = input("\nEnter trade-style matrix profile name: ").strip().lower()
+            profile = get_matrix_profile(profile_name)
+
+            if profile is None:
+                print("Trade-style matrix profile not found.")
+                continue
+
+            print(f"\nTrade-style matrix profile: {profile_name}")
+            for key, value in profile.items():
+                print(f"- {key}: {value}")
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")

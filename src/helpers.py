@@ -13,7 +13,7 @@ def print_menu():
     print("6. Remove stock")
     print("7. Show ticker symbols only")
     print("8. Build basic stock research report")
-    print("9. View strategy profile")
+    print("9. View risk profile")
     print("10. Paper buy test")
     print("11. Paper sell test")
     print("12. View paper portfolio summary")
@@ -25,6 +25,7 @@ def print_menu():
     print("18. View effective strategy with ticker override")
     print("19. Evaluate open paper position for exit")
     print("20. Execute paper auto-sell from exit rules")
+    print("21. View trade-style matrix profile")
     print("0. Exit")
 
 
