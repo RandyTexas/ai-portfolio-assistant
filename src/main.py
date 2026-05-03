@@ -1,4 +1,5 @@
 from config.settings import APP_NAME, VERSION, DEFAULT_MODE
+from exit_rules import evaluate_exit_rules
 from helpers import (
     print_banner,
     print_menu,
@@ -17,6 +18,7 @@ from paper_trading import (
 )
 from research.stock_research import build_basic_stock_report
 from strategy import get_strategy_profile
+from strategy_overrides import get_effective_strategy
 from strategy_rules import evaluate_trade_setup
 from trade_decision import evaluate_paper_trade_decision
 from trade_execution import execute_paper_trade
@@ -230,6 +232,64 @@ def main():
             print(f"- open_positions: {updated_summary['position_count']}")
             print(f"- tickers_held: {updated_summary['tickers']}")
             print(f"- trade_count: {updated_summary['trade_count']}")
+
+        elif choice == "17":
+            entry_price = float(input("Enter entry price: ").strip())
+            current_price = float(input("Enter current price: ").strip())
+            highest_price = float(input("Enter highest price reached: ").strip())
+
+            take_profit_pct_input = input(
+                "Enter take profit % as decimal or leave blank (example 0.04): "
+            ).strip()
+            take_profit_price_input = input(
+                "Enter take profit price or leave blank (example 110): "
+            ).strip()
+
+            stop_loss_pct_input = input(
+                "Enter stop loss % as decimal or leave blank (example 0.05): "
+            ).strip()
+            stop_loss_price_input = input(
+                "Enter stop loss price or leave blank (example 95): "
+            ).strip()
+
+            trailing_stop_pct_input = input(
+                "Enter trailing stop % as decimal or leave blank (example 0.04): "
+            ).strip()
+            trailing_stop_amount_input = input(
+                "Enter trailing stop dollar amount from peak or leave blank (example 5): "
+            ).strip()
+
+            result = evaluate_exit_rules(
+                entry_price=entry_price,
+                current_price=current_price,
+                highest_price=highest_price,
+                take_profit_pct=float(take_profit_pct_input) if take_profit_pct_input else None,
+                take_profit_price=float(take_profit_price_input) if take_profit_price_input else None,
+                stop_loss_pct=float(stop_loss_pct_input) if stop_loss_pct_input else None,
+                stop_loss_price=float(stop_loss_price_input) if stop_loss_price_input else None,
+                trailing_stop_pct=float(trailing_stop_pct_input) if trailing_stop_pct_input else None,
+                trailing_stop_amount=float(trailing_stop_amount_input) if trailing_stop_amount_input else None,
+            )
+
+            print("\nExit rule result:")
+            for key, value in result.items():
+                print(f"- {key}: {value}")
+
+        elif choice == "18":
+            strategy_name = input("Enter strategy name (balanced/aggressive): ").strip().lower()
+            ticker = input("Enter ticker for override check (or leave blank): ").strip().upper()
+
+            profile = get_effective_strategy(strategy_name, ticker if ticker else None)
+
+            if profile is None:
+                print("Strategy not found.")
+                continue
+
+            print("\nEffective strategy result:")
+            print(f"- strategy_name: {strategy_name}")
+            print(f"- ticker: {ticker if ticker else 'none'}")
+            for key, value in profile.items():
+                print(f"- {key}: {value}")
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")

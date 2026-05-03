@@ -21,6 +21,8 @@ def print_menu():
     print("14. Evaluate strategy trade setup")
     print("15. Evaluate paper trade decision")
     print("16. Execute paper trade from strategy")
+    print("17. Evaluate exit rules")
+    print("18. View effective strategy with ticker override")
     print("0. Exit")
 
 
