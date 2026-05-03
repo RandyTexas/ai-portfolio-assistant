@@ -1,3 +1,4 @@
+from auto_exit import execute_auto_exit
 from config.settings import APP_NAME, VERSION, DEFAULT_MODE
 from exit_rules import evaluate_exit_rules
 from helpers import (
@@ -334,6 +335,56 @@ def main():
             print("\nOpen position exit evaluation result:")
             for key, value in result.items():
                 print(f"- {key}: {value}")
+
+        elif choice == "20":
+            ticker = input("Enter ticker with open position: ").strip().upper()
+            current_price = float(input("Enter current price: ").strip())
+            highest_price = float(input("Enter highest price reached: ").strip())
+
+            take_profit_pct_input = input(
+                "Enter take profit % as decimal or leave blank (example 0.04): "
+            ).strip()
+            take_profit_price_input = input(
+                "Enter take profit price or leave blank (example 110): "
+            ).strip()
+
+            stop_loss_pct_input = input(
+                "Enter stop loss % as decimal or leave blank (example 0.05): "
+            ).strip()
+            stop_loss_price_input = input(
+                "Enter stop loss price or leave blank (example 95): "
+            ).strip()
+
+            trailing_stop_pct_input = input(
+                "Enter trailing stop % as decimal or leave blank (example 0.04): "
+            ).strip()
+            trailing_stop_amount_input = input(
+                "Enter trailing stop dollar amount from peak or leave blank (example 5): "
+            ).strip()
+
+            result = execute_auto_exit(
+                portfolio=portfolio,
+                ticker=ticker,
+                current_price=current_price,
+                highest_price=highest_price,
+                take_profit_pct=float(take_profit_pct_input) if take_profit_pct_input else None,
+                take_profit_price=float(take_profit_price_input) if take_profit_price_input else None,
+                stop_loss_pct=float(stop_loss_pct_input) if stop_loss_pct_input else None,
+                stop_loss_price=float(stop_loss_price_input) if stop_loss_price_input else None,
+                trailing_stop_pct=float(trailing_stop_pct_input) if trailing_stop_pct_input else None,
+                trailing_stop_amount=float(trailing_stop_amount_input) if trailing_stop_amount_input else None,
+            )
+
+            print("\nPaper auto-sell result:")
+            for key, value in result.items():
+                print(f"- {key}: {value}")
+
+            updated_summary = get_portfolio_summary(portfolio)
+            print("\nUpdated portfolio summary:")
+            print(f"- cash: {updated_summary['cash']:.2f}")
+            print(f"- open_positions: {updated_summary['position_count']}")
+            print(f"- tickers_held: {updated_summary['tickers']}")
+            print(f"- trade_count: {updated_summary['trade_count']}")
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")

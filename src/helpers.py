@@ -24,6 +24,7 @@ def print_menu():
     print("17. Evaluate exit rules")
     print("18. View effective strategy with ticker override")
     print("19. Evaluate open paper position for exit")
+    print("20. Execute paper auto-sell from exit rules")
     print("0. Exit")
 
 
