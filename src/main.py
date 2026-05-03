@@ -12,6 +12,7 @@ from helpers import (
     display_trade_history,
 )
 from merged_trade_decision import evaluate_trade_with_effective_rules
+from merged_trade_execution import execute_trade_with_effective_rules
 from paper_trading import (
     create_paper_portfolio,
     paper_buy,
@@ -405,6 +406,35 @@ def main():
             print("\nMerged-rule trade decision result:")
             for key, value in result.items():
                 print(f"- {key}: {value}")
+
+        elif choice == "24":
+            ticker = input("Enter ticker: ").strip().upper()
+            risk_profile_name = input("Enter risk profile name (passive/balanced/aggressive): ").strip().lower()
+            trade_style_name = input("Enter trade-style name (quick_trade/short_hold) or leave blank: ").strip().lower()
+            portfolio_cash = float(input("Enter portfolio cash: ").strip())
+            position_size_dollars = float(input("Enter position size in dollars: ").strip())
+            entry_price = float(input("Enter entry price: ").strip())
+
+            result = execute_trade_with_effective_rules(
+                portfolio=portfolio,
+                ticker=ticker,
+                risk_profile_name=risk_profile_name,
+                trade_style_name=trade_style_name if trade_style_name else None,
+                portfolio_cash=portfolio_cash,
+                position_size_dollars=position_size_dollars,
+                entry_price=entry_price,
+            )
+
+            print("\nMerged-rule paper trade execution result:")
+            for key, value in result.items():
+                print(f"- {key}: {value}")
+
+            updated_summary = get_portfolio_summary(portfolio)
+            print("\nUpdated portfolio summary:")
+            print(f"- cash: {updated_summary['cash']:.2f}")
+            print(f"- open_positions: {updated_summary['position_count']}")
+            print(f"- tickers_held: {updated_summary['tickers']}")
+            print(f"- trade_count: {updated_summary['trade_count']}")
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")
