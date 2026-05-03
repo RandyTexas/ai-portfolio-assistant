@@ -11,6 +11,7 @@ from helpers import (
     display_stock_lookup,
     display_trade_history,
 )
+from merged_position_exit import evaluate_position_with_effective_rules
 from merged_trade_decision import evaluate_trade_with_effective_rules
 from merged_trade_execution import execute_trade_with_effective_rules
 from paper_trading import (
@@ -435,6 +436,26 @@ def main():
             print(f"- open_positions: {updated_summary['position_count']}")
             print(f"- tickers_held: {updated_summary['tickers']}")
             print(f"- trade_count: {updated_summary['trade_count']}")
+
+        elif choice == "25":
+            ticker = input("Enter ticker with open position: ").strip().upper()
+            risk_profile_name = input("Enter risk profile name (passive/balanced/aggressive): ").strip().lower()
+            trade_style_name = input("Enter trade-style name (quick_trade/short_hold) or leave blank: ").strip().lower()
+            current_price = float(input("Enter current price: ").strip())
+            highest_price = float(input("Enter highest price reached: ").strip())
+
+            result = evaluate_position_with_effective_rules(
+                portfolio=portfolio,
+                ticker=ticker,
+                current_price=current_price,
+                highest_price=highest_price,
+                risk_profile_name=risk_profile_name,
+                trade_style_name=trade_style_name if trade_style_name else None,
+            )
+
+            print("\nMerged-rule position exit result:")
+            for key, value in result.items():
+                print(f"- {key}: {value}")
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")

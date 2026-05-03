@@ -29,6 +29,7 @@ def print_menu():
     print("22. View merged effective rules")
     print("23. Evaluate trade using merged effective rules")
     print("24. Execute paper trade using merged effective rules")
+    print("25. Evaluate open position using merged effective rules")
     print("0. Exit")
 
 
