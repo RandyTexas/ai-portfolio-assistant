@@ -10,6 +10,9 @@ WATCHLIST_FILE = DATA_DIR / "watchlist.json"
 CHANGE_REQUESTS_FILE = DATA_DIR / "change_requests.json"
 IMPLEMENTATION_QUEUE_FILE = DATA_DIR / "implementation_queue.json"
 
+ALPACA_DATA_BASE_URL = "https://data.alpaca.markets"
+ALPACA_CRYPTO_LOC = "us"
+
 DEFAULT_WATCHLIST = [
     {"ticker": "AAPL", "category": "growth"},
     {"ticker": "MSFT", "category": "growth"},

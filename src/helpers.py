@@ -37,6 +37,8 @@ def print_menu():
     print("30. Add approved request to implementation queue")
     print("31. View implementation queue")
     print("32. Update implementation queue status")
+    print("33. Get latest stock bar from market data API")
+    print("34. Get latest crypto bar from market data API")
     print("0. Exit")
 
 

@@ -9,6 +9,7 @@ from implementation_queue import (
     load_implementation_queue,
     update_queue_item_status,
 )
+from market_data import get_latest_stock_bar, get_latest_crypto_bar
 from auto_exit import execute_auto_exit
 from config.settings import APP_NAME, VERSION, DEFAULT_MODE
 from effective_rules import build_effective_rules
@@ -559,6 +560,43 @@ def main():
 
             print("\nUpdated implementation queue item:")
             for key, value in updated_item.items():
+                print(f"- {key}: {value}")
+
+        elif choice == "33":
+            symbol = input("Enter stock symbol: ").strip().upper()
+            feed = input("Enter feed (iex/delayed_sip/sip) or leave blank for iex: ").strip().lower()
+            if not feed:
+                feed = "iex"
+
+            try:
+                bar = get_latest_stock_bar(symbol, feed=feed)
+            except Exception as exc:
+                print(f"Error: {exc}")
+                continue
+
+            if bar is None:
+                print("No stock bar data returned.")
+                continue
+
+            print("\nLatest stock bar:")
+            for key, value in bar.items():
+                print(f"- {key}: {value}")
+
+        elif choice == "34":
+            symbol = input("Enter crypto symbol (example BTC/USD): ").strip().upper()
+
+            try:
+                bar = get_latest_crypto_bar(symbol)
+            except Exception as exc:
+                print(f"Error: {exc}")
+                continue
+
+            if bar is None:
+                print("No crypto bar data returned.")
+                continue
+
+            print("\nLatest crypto bar:")
+            for key, value in bar.items():
                 print(f"- {key}: {value}")
 
         elif choice == "0":
