@@ -42,6 +42,8 @@ def print_menu():
     print("35. Refresh watchlist market data")
     print("36. Evaluate live trade using market data")
     print("37. Execute live paper trade using market data")
+    print("38. Save manual override for ticker")
+    print("39. View saved manual ticker override")
     print("0. Exit")
 
 

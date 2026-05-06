@@ -1,4 +1,5 @@
 from live_trade_execution import execute_live_trade_with_effective_rules
+from manual_overrides import save_manual_ticker_override, get_manual_ticker_override
 from live_trade_decision import evaluate_live_trade_with_effective_rules
 from ai_builder import (
     create_change_request,
@@ -702,6 +703,56 @@ def main():
             print(f"- open_positions: {updated_summary['position_count']}")
             print(f"- tickers_held: {updated_summary['tickers']}")
             print(f"- trade_count: {updated_summary['trade_count']}")
+
+        elif choice == "38":
+            ticker = input("Enter ticker to save override for: ").strip().upper()
+
+            take_profit_pct_input = input(
+                "Enter take profit % override as decimal or leave blank: "
+            ).strip()
+            stop_loss_pct_input = input(
+                "Enter stop loss % override as decimal or leave blank: "
+            ).strip()
+            trailing_stop_pct_input = input(
+                "Enter trailing stop % override as decimal or leave blank: "
+            ).strip()
+            max_position_size_pct_input = input(
+                "Enter max position size % override as decimal or leave blank: "
+            ).strip()
+
+            override_rules = {}
+
+            if take_profit_pct_input:
+                override_rules["take_profit_pct"] = float(take_profit_pct_input)
+            if stop_loss_pct_input:
+                override_rules["stop_loss_pct"] = float(stop_loss_pct_input)
+            if trailing_stop_pct_input:
+                override_rules["trailing_stop_pct"] = float(trailing_stop_pct_input)
+            if max_position_size_pct_input:
+                override_rules["max_position_size_pct"] = float(max_position_size_pct_input)
+
+            if not override_rules:
+                print("No override values entered.")
+                continue
+
+            result = save_manual_ticker_override(ticker, override_rules)
+
+            print("\nSaved manual ticker override:")
+            for key, value in result.items():
+                print(f"- {key}: {value}")
+
+        elif choice == "39":
+            ticker = input("Enter ticker to view saved override: ").strip().upper()
+            override = get_manual_ticker_override(ticker)
+
+            if override is None:
+                print("No saved manual override found for that ticker.")
+                continue
+
+            print("\nSaved manual ticker override:")
+            print(f"- ticker: {ticker}")
+            for key, value in override.items():
+                print(f"- {key}: {value}")
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")
