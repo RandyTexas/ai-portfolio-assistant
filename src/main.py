@@ -121,7 +121,11 @@ def main():
 
         elif choice == "8":
             ticker = input("Enter ticker for research: ").strip().upper()
-            report = build_basic_stock_report(ticker)
+            feed = input("Enter stock feed (iex/delayed_sip/sip) or leave blank for iex: ").strip().lower()
+            if not feed:
+                feed = "iex"
+
+            report = build_basic_stock_report(ticker, feed=feed)
 
             print("\nBasic stock research report:")
             print(f"- ticker: {report['ticker']}")
@@ -129,9 +133,16 @@ def main():
             print(f"- in_watchlist: {report['in_watchlist']}")
             print(f"- summary: {report['summary']}")
             print(f"- category_guess: {report['category_guess']}")
+            print(f"- market_data_status: {report['market_data_status']}")
             print("- notes:")
             for note in report["notes"]:
                 print(f"  - {note}")
+
+            latest_bar = report.get("latest_bar")
+            if latest_bar:
+                print("- latest_bar:")
+                for key, value in latest_bar.items():
+                    print(f"  - {key}: {value}")
 
         elif choice == "9":
             strategy_name = input("Enter risk profile name (passive/balanced/aggressive): ").strip().lower()
