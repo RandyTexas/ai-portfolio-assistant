@@ -5,6 +5,7 @@ from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 
 from config.settings import ALPACA_DATA_BASE_URL, ALPACA_CRYPTO_LOC
+from watchlist import load_watchlist
 
 
 def _get_auth_headers():
@@ -83,3 +84,34 @@ def get_latest_crypto_bar(symbol, loc=None):
         "close": bar.get("c"),
         "volume": bar.get("v"),
     }
+
+
+def refresh_watchlist_market_data(feed="iex"):
+    watchlist = load_watchlist()
+    results = []
+
+    for item in watchlist:
+        symbol = item["ticker"]
+
+        try:
+            bar = get_latest_stock_bar(symbol, feed=feed)
+            results.append(
+                {
+                    "ticker": symbol,
+                    "category": item["category"],
+                    "status": "ok" if bar else "no_data",
+                    "bar": bar,
+                }
+            )
+        except Exception as exc:
+            results.append(
+                {
+                    "ticker": symbol,
+                    "category": item["category"],
+                    "status": "error",
+                    "error": str(exc),
+                    "bar": None,
+                }
+            )
+
+    return results

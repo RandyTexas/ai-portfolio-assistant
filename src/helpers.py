@@ -39,6 +39,7 @@ def print_menu():
     print("32. Update implementation queue status")
     print("33. Get latest stock bar from market data API")
     print("34. Get latest crypto bar from market data API")
+    print("35. Refresh watchlist market data")
     print("0. Exit")
 
 
@@ -132,3 +133,24 @@ def display_implementation_queue(queue_items):
         )
         print(f"   request: {item['request_text']}")
         print(f"   queued_at: {item['queued_at']}")
+
+
+def display_watchlist_market_data(results):
+    print("\nWatchlist market data refresh:")
+
+    if not results:
+        print("- no watchlist results")
+        return
+
+    for item in results:
+        print(f"- {item['ticker']} ({item['category']}) | status={item['status']}")
+
+        if item["status"] == "ok" and item["bar"]:
+            bar = item["bar"]
+            print(f"   close: {bar['close']}")
+            print(f"   high: {bar['high']}")
+            print(f"   low: {bar['low']}")
+            print(f"   volume: {bar['volume']}")
+            print(f"   timestamp: {bar['timestamp']}")
+        elif item["status"] == "error":
+            print(f"   error: {item['error']}")
