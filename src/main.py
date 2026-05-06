@@ -9,7 +9,11 @@ from implementation_queue import (
     load_implementation_queue,
     update_queue_item_status,
 )
-from market_data import get_latest_stock_bar, get_latest_crypto_bar
+from market_data import (
+    get_latest_stock_bar,
+    get_latest_crypto_bar,
+    refresh_watchlist_market_data,
+)
 from auto_exit import execute_auto_exit
 from config.settings import APP_NAME, VERSION, DEFAULT_MODE
 from effective_rules import build_effective_rules
@@ -24,6 +28,7 @@ from helpers import (
     display_trade_history,
     display_change_requests,
     display_implementation_queue,
+    display_watchlist_market_data,
 )
 from merged_position_exit import evaluate_position_with_effective_rules
 from merged_trade_decision import evaluate_trade_with_effective_rules
@@ -598,6 +603,20 @@ def main():
             print("\nLatest crypto bar:")
             for key, value in bar.items():
                 print(f"- {key}: {value}")
+
+        elif choice == "35":
+            feed = input("Enter stock feed (iex/delayed_sip/sip) or leave blank for iex: ").strip().lower()
+            if not feed:
+                feed = "iex"
+
+            try:
+                results = refresh_watchlist_market_data(feed=feed)
+            except Exception as exc:
+                print(f"Error: {exc}")
+                continue
+
+            display_watchlist_market_data(results)
+    
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")
