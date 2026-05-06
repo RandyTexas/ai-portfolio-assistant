@@ -1,3 +1,4 @@
+from live_trade_decision import evaluate_live_trade_with_effective_rules
 from ai_builder import (
     create_change_request,
     load_change_requests,
@@ -627,6 +628,38 @@ def main():
                 continue
 
             display_watchlist_market_data(results)
+
+        elif choice == "36":
+            ticker = input("Enter ticker: ").strip().upper()
+            risk_profile_name = input(
+                "Enter risk profile name (passive/balanced/aggressive): "
+            ).strip().lower()
+            trade_style_name = input(
+                "Enter trade-style name (quick_trade/short_hold) or leave blank: "
+            ).strip().lower()
+            portfolio_cash = float(input("Enter portfolio cash: ").strip())
+            position_size_dollars = float(input("Enter position size in dollars: ").strip())
+            feed = input("Enter stock feed (iex/delayed_sip/sip) or leave blank for iex: ").strip().lower()
+
+            if not feed:
+                feed = "iex"
+
+            try:
+                result = evaluate_live_trade_with_effective_rules(
+                    ticker=ticker,
+                    risk_profile_name=risk_profile_name,
+                    trade_style_name=trade_style_name if trade_style_name else None,
+                    portfolio_cash=portfolio_cash,
+                    position_size_dollars=position_size_dollars,
+                    feed=feed,
+                )
+            except Exception as exc:
+                print(f"Error: {exc}")
+                continue
+
+            print("\nLive merged-rule trade decision result:")
+            for key, value in result.items():
+                print(f"- {key}: {value}")
     
 
         elif choice == "0":
