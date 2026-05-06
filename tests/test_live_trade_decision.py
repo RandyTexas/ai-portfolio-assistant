@@ -2,12 +2,12 @@ from live_trade_decision import evaluate_live_trade_with_effective_rules
 
 
 def test_live_trade_decision_returns_error_when_no_bar(monkeypatch):
-    def fake_get_latest_stock_bar(ticker, feed="iex"):
+    def fake_get_latest_market_bar(ticker, feed="iex"):
         return None
 
     monkeypatch.setattr(
-        "live_trade_decision.get_latest_stock_bar",
-        fake_get_latest_stock_bar,
+        "live_trade_decision.get_latest_market_bar",
+        fake_get_latest_market_bar,
     )
 
     result = evaluate_live_trade_with_effective_rules(
@@ -25,9 +25,10 @@ def test_live_trade_decision_returns_error_when_no_bar(monkeypatch):
 
 
 def test_live_trade_decision_uses_live_close_as_entry_price(monkeypatch):
-    def fake_get_latest_stock_bar(ticker, feed="iex"):
+    def fake_get_latest_market_bar(ticker, feed="iex"):
         return {
             "symbol": "AAPL",
+            "asset_type": "stock",
             "timestamp": "2026-05-05T20:00:00Z",
             "open": 100.0,
             "high": 101.0,
@@ -37,8 +38,8 @@ def test_live_trade_decision_uses_live_close_as_entry_price(monkeypatch):
         }
 
     monkeypatch.setattr(
-        "live_trade_decision.get_latest_stock_bar",
-        fake_get_latest_stock_bar,
+        "live_trade_decision.get_latest_market_bar",
+        fake_get_latest_market_bar,
     )
 
     result = evaluate_live_trade_with_effective_rules(
@@ -57,9 +58,10 @@ def test_live_trade_decision_uses_live_close_as_entry_price(monkeypatch):
 
 
 def test_live_trade_decision_rejects_oversized_trade(monkeypatch):
-    def fake_get_latest_stock_bar(ticker, feed="iex"):
+    def fake_get_latest_market_bar(ticker, feed="iex"):
         return {
             "symbol": "AAPL",
+            "asset_type": "stock",
             "timestamp": "2026-05-05T20:00:00Z",
             "open": 100.0,
             "high": 101.0,
@@ -69,8 +71,8 @@ def test_live_trade_decision_rejects_oversized_trade(monkeypatch):
         }
 
     monkeypatch.setattr(
-        "live_trade_decision.get_latest_stock_bar",
-        fake_get_latest_stock_bar,
+        "live_trade_decision.get_latest_market_bar",
+        fake_get_latest_market_bar,
     )
 
     result = evaluate_live_trade_with_effective_rules(
@@ -88,9 +90,10 @@ def test_live_trade_decision_rejects_oversized_trade(monkeypatch):
 
 
 def test_live_trade_decision_uses_ticker_override(monkeypatch):
-    def fake_get_latest_stock_bar(ticker, feed="iex"):
+    def fake_get_latest_market_bar(ticker, feed="iex"):
         return {
             "symbol": "NVDA",
+            "asset_type": "stock",
             "timestamp": "2026-05-05T20:00:00Z",
             "open": 100.0,
             "high": 101.0,
@@ -100,8 +103,8 @@ def test_live_trade_decision_uses_ticker_override(monkeypatch):
         }
 
     monkeypatch.setattr(
-        "live_trade_decision.get_latest_stock_bar",
-        fake_get_latest_stock_bar,
+        "live_trade_decision.get_latest_market_bar",
+        fake_get_latest_market_bar,
     )
 
     result = evaluate_live_trade_with_effective_rules(
