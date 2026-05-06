@@ -14,6 +14,7 @@ from implementation_queue import (
 from market_data import (
     get_latest_stock_bar,
     get_latest_crypto_bar,
+    get_latest_market_bar,
     refresh_watchlist_market_data,
 )
 from auto_exit import execute_auto_exit
@@ -640,7 +641,7 @@ def main():
             ).strip().lower()
             portfolio_cash = float(input("Enter portfolio cash: ").strip())
             position_size_dollars = float(input("Enter position size in dollars: ").strip())
-            feed = input("Enter stock feed (iex/delayed_sip/sip) or leave blank for iex: ").strip().lower()
+            feed = input("Enter stock feed (iex/delayed_sip/sip) or leave blank for iex. Ignored for crypto: ").strip().lower()
 
             if not feed:
                 feed = "iex"

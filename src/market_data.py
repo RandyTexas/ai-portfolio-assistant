@@ -52,6 +52,7 @@ def get_latest_stock_bar(symbol, feed="iex"):
 
     return {
         "symbol": symbol,
+        "asset_type": "stock",
         "timestamp": bar.get("t"),
         "open": bar.get("o"),
         "high": bar.get("h"),
@@ -77,6 +78,7 @@ def get_latest_crypto_bar(symbol, loc=None):
 
     return {
         "symbol": symbol,
+        "asset_type": "crypto",
         "timestamp": bar.get("t"),
         "open": bar.get("o"),
         "high": bar.get("h"),
@@ -84,6 +86,15 @@ def get_latest_crypto_bar(symbol, loc=None):
         "close": bar.get("c"),
         "volume": bar.get("v"),
     }
+
+
+def get_latest_market_bar(symbol, feed="iex"):
+    symbol = symbol.strip().upper()
+
+    if "/" in symbol:
+        return get_latest_crypto_bar(symbol)
+
+    return get_latest_stock_bar(symbol, feed=feed)
 
 
 def refresh_watchlist_market_data(feed="iex"):

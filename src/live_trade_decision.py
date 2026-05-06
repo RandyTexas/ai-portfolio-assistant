@@ -1,4 +1,4 @@
-from market_data import get_latest_stock_bar
+from market_data import get_latest_market_bar
 from merged_trade_decision import evaluate_trade_with_effective_rules
 
 
@@ -10,7 +10,7 @@ def evaluate_live_trade_with_effective_rules(
     trade_style_name=None,
     feed="iex",
 ):
-    latest_bar = get_latest_stock_bar(ticker, feed=feed)
+    latest_bar = get_latest_market_bar(ticker, feed=feed)
 
     if latest_bar is None:
         return {
