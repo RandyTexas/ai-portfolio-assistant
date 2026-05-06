@@ -41,6 +41,7 @@ def print_menu():
     print("34. Get latest crypto bar from market data API")
     print("35. Refresh watchlist market data")
     print("36. Evaluate live trade using market data")
+    print("37. Execute live paper trade using market data")
     print("0. Exit")
 
 

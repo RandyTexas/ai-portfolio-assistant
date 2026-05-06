@@ -1,3 +1,4 @@
+from live_trade_execution import execute_live_trade_with_effective_rules
 from live_trade_decision import evaluate_live_trade_with_effective_rules
 from ai_builder import (
     create_change_request,
@@ -661,6 +662,45 @@ def main():
             for key, value in result.items():
                 print(f"- {key}: {value}")
     
+        elif choice == "37":
+            ticker = input("Enter ticker: ").strip().upper()
+            risk_profile_name = input(
+                "Enter risk profile name (passive/balanced/aggressive): "
+            ).strip().lower()
+            trade_style_name = input(
+                "Enter trade-style name (quick_trade/short_hold) or leave blank: "
+            ).strip().lower()
+            portfolio_cash = float(input("Enter portfolio cash: ").strip())
+            position_size_dollars = float(input("Enter position size in dollars: ").strip())
+            feed = input("Enter stock feed (iex/delayed_sip/sip) or leave blank for iex: ").strip().lower()
+
+            if not feed:
+                feed = "iex"
+
+            try:
+                result = execute_live_trade_with_effective_rules(
+                    portfolio=portfolio,
+                    ticker=ticker,
+                    risk_profile_name=risk_profile_name,
+                    trade_style_name=trade_style_name if trade_style_name else None,
+                    portfolio_cash=portfolio_cash,
+                    position_size_dollars=position_size_dollars,
+                    feed=feed,
+                )
+            except Exception as exc:
+                print(f"Error: {exc}")
+                continue
+
+            print("\nLive merged-rule paper trade execution result:")
+            for key, value in result.items():
+                print(f"- {key}: {value}")
+
+            updated_summary = get_portfolio_summary(portfolio)
+            print("\nUpdated portfolio summary:")
+            print(f"- cash: {updated_summary['cash']:.2f}")
+            print(f"- open_positions: {updated_summary['position_count']}")
+            print(f"- tickers_held: {updated_summary['tickers']}")
+            print(f"- trade_count: {updated_summary['trade_count']}")
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")
