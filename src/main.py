@@ -1,5 +1,14 @@
+from typing import override
+
 from live_trade_execution import execute_live_trade_with_effective_rules
-from manual_overrides import save_manual_ticker_override, get_manual_ticker_override
+from manual_overrides import (
+    save_manual_ticker_override,
+    get_manual_ticker_override,
+    has_manual_ticker_override,
+    delete_manual_ticker_override,
+    disable_manual_ticker_override,
+    enable_manual_ticker_override,
+)
 from live_trade_decision import evaluate_live_trade_with_effective_rules
 from ai_builder import (
     create_change_request,
@@ -33,6 +42,7 @@ from helpers import (
     display_change_requests,
     display_implementation_queue,
     display_watchlist_market_data,
+    display_manual_ticker_override,
 )
 from merged_position_exit import evaluate_position_with_effective_rules
 from merged_trade_decision import evaluate_trade_with_effective_rules
@@ -706,6 +716,13 @@ def main():
 
         elif choice == "38":
             ticker = input("Enter ticker to save override for: ").strip().upper()
+            default_name = f"{ticker} manual override"
+            override_name = input(
+                f"Enter override name or leave blank for default [{default_name}]: "
+            ).strip()
+
+            if not override_name:
+                override_name = default_name
 
             take_profit_pct_input = input(
                 "Enter take profit % override as decimal or leave blank: "
@@ -735,7 +752,30 @@ def main():
                 print("No override values entered.")
                 continue
 
-            result = save_manual_ticker_override(ticker, override_rules)
+            overwrite = False
+            if get_manual_ticker_override(ticker) is not None:
+                print("\nAn override already exists for this ticker.")
+                print("1. Overwrite existing override")
+                print("2. Cancel")
+
+                overwrite_choice = input("Choose an option: ").strip()
+
+                if overwrite_choice == "1":
+                    overwrite = True
+                else:
+                    print("Canceled.")
+                    continue
+
+            result = save_manual_ticker_override(
+                ticker=ticker,
+                override_name=override_name,
+                override_rules=override_rules,
+                overwrite=overwrite,
+            )
+
+            if result["saved"] is False:
+                print(result["reason"])
+                continue
 
             print("\nSaved manual ticker override:")
             for key, value in result.items():
@@ -744,15 +784,71 @@ def main():
         elif choice == "39":
             ticker = input("Enter ticker to view saved override: ").strip().upper()
             override = get_manual_ticker_override(ticker)
+            display_manual_ticker_override(ticker, override)
+
+        elif choice == "40":
+            ticker = input("Enter ticker to disable saved override: ").strip().upper()
+            override = set_manual_ticker_override_enabled(ticker, False)
 
             if override is None:
                 print("No saved manual override found for that ticker.")
                 continue
 
-            print("\nSaved manual ticker override:")
+            print("\nManual override disabled.")
+            display_manual_ticker_override(ticker, override)
+
+        elif choice == "41":
+            ticker = input("Enter ticker to enable saved override: ").strip().upper()
+            changed = enable_manual_ticker_override(ticker)
+
+            if not changed:
+                print("No saved manual override found for that ticker.")
+                continue
+
+            print("\nEnabled manual ticker override:")
             print(f"- ticker: {ticker}")
-            for key, value in override.items():
-                print(f"- {key}: {value}")
+            print("- enabled: True")
+
+            if override is None:
+                print("No saved manual override found for that ticker.")
+                continue
+
+            print("\nManual override enabled.")
+            display_manual_ticker_override(ticker, override)
+
+        elif choice == "42":
+            ticker = input("Enter ticker to delete saved override: ").strip().upper()
+            print("\nChoose action:")
+            print("1. Delete override")
+            print("2. Disable override")
+            print("3. Cancel")
+
+            action = input("Choose an option: ").strip()
+
+            if action == "1":
+                deleted = delete_manual_ticker_override(ticker)
+
+                if not deleted:
+                    print("No saved manual override found for that ticker.")
+                continue
+
+                print("\nDeleted manual ticker override:")
+                print(f"- ticker: {ticker}")
+                print("- status: deleted")
+
+            elif action == "2":
+                changed = disable_manual_ticker_override(ticker)
+
+                if not changed:
+                    print("No saved manual override found for that ticker.")
+                    continue
+
+                print("\nDisabled manual ticker override:")
+                print(f"- ticker: {ticker}")
+                print("- enabled: False")
+
+            else:
+                print("Canceled.")
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")
