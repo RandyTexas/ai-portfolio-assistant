@@ -25,11 +25,20 @@ def save_ticker_override_store(store):
         json.dump(store, file, indent=4)
 
 
-def save_manual_ticker_override(ticker, override_rules):
+def save_manual_ticker_override(ticker, override_rules, name=None):
     ticker = ticker.strip().upper()
     store = load_ticker_override_store()
 
-    store[ticker] = dict(override_rules)
+    existing = store.get(ticker, {})
+    enabled = existing.get("enabled", True)
+    override_name = name.strip() if name else f"{ticker} manual override"
+
+    store[ticker] = {
+        "name": override_name,
+        "enabled": enabled,
+        "rules": dict(override_rules),
+    }
+
     save_ticker_override_store(store)
 
     return {
@@ -42,3 +51,43 @@ def get_manual_ticker_override(ticker):
     ticker = ticker.strip().upper()
     store = load_ticker_override_store()
     return store.get(ticker)
+
+
+def has_manual_ticker_override(ticker):
+    return get_manual_ticker_override(ticker) is not None
+
+
+def delete_manual_ticker_override(ticker):
+    ticker = ticker.strip().upper()
+    store = load_ticker_override_store()
+
+    if ticker not in store:
+        return False
+
+    del store[ticker]
+    save_ticker_override_store(store)
+    return True
+
+
+def disable_manual_ticker_override(ticker):
+    ticker = ticker.strip().upper()
+    store = load_ticker_override_store()
+
+    if ticker not in store:
+        return False
+
+    store[ticker]["enabled"] = False
+    save_ticker_override_store(store)
+    return True
+
+
+def enable_manual_ticker_override(ticker):
+    ticker = ticker.strip().upper()
+    store = load_ticker_override_store()
+
+    if ticker not in store:
+        return False
+
+    store[ticker]["enabled"] = True
+    save_ticker_override_store(store)
+    return True

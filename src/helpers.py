@@ -44,6 +44,9 @@ def print_menu():
     print("37. Execute live paper trade using market data")
     print("38. Save manual override for ticker")
     print("39. View saved manual ticker override")
+    print("40. Disable saved manual ticker override")
+    print("41. Enable saved manual ticker override")
+    print("42. Delete saved manual ticker override")
     print("0. Exit")
 
 
@@ -158,3 +161,22 @@ def display_watchlist_market_data(results):
             print(f"   timestamp: {bar['timestamp']}")
         elif item["status"] == "error":
             print(f"   error: {item['error']}")
+
+
+def display_manual_ticker_override(ticker, override):
+    print("\nSaved manual ticker override:")
+
+    if override is None:
+        print("- no saved manual override found")
+        return
+
+    print(f"- ticker: {ticker}")
+    print(f"- name: {override['name']}")
+    print(f"- enabled: {override['enabled']}")
+
+    if not override["enabled"]:
+        print("- rules: hidden while override is disabled")
+        return
+
+    for key, value in override["rules"].items():
+        print(f"- {key}: {value}")
