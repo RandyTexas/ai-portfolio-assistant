@@ -1,5 +1,5 @@
 from market_data import get_latest_market_bar
-from merged_trade_decision import evaluate_trade_with_effective_rules
+from manual_override_trade_decision import evaluate_trade_with_saved_override
 
 
 def evaluate_live_trade_with_effective_rules(
@@ -21,10 +21,10 @@ def evaluate_live_trade_with_effective_rules(
 
     entry_price = latest_bar["close"]
 
-    decision = evaluate_trade_with_effective_rules(
+    decision = evaluate_trade_with_saved_override(
+        ticker=ticker,
         risk_profile_name=risk_profile_name,
         trade_style_name=trade_style_name,
-        ticker=ticker,
         portfolio_cash=portfolio_cash,
         position_size_dollars=position_size_dollars,
         entry_price=entry_price,
