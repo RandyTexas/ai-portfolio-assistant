@@ -47,6 +47,7 @@ def print_menu():
     print("40. Disable saved manual ticker override")
     print("41. Enable saved manual ticker override")
     print("42. Delete saved manual ticker override")
+    print("43. List all saved manual ticker overrides")
     print("0. Exit")
 
 
@@ -163,20 +164,20 @@ def display_watchlist_market_data(results):
             print(f"   error: {item['error']}")
 
 
-def display_manual_ticker_override(ticker, override):
-    print("\nSaved manual ticker override:")
+def display_manual_ticker_overrides(overrides):
+    print("\nSaved manual ticker overrides:")
 
-    if override is None:
-        print("- no saved manual override found")
+    if not overrides:
+        print("- no saved manual overrides")
         return
 
-    print(f"- ticker: {ticker}")
-    print(f"- name: {override['name']}")
-    print(f"- enabled: {override['enabled']}")
-
-    if not override["enabled"]:
-        print("- rules: hidden while override is disabled")
-        return
-
-    for key, value in override["rules"].items():
-        print(f"- {key}: {value}")
+    for item in overrides:
+        print(f"- ticker: {item['ticker']}")
+        print(f"  - name: {item['name']}")
+        print(f"  - enabled: {item['enabled']}")
+        print("  - rules:")
+        if not item["rules"]:
+            print("    - none")
+        else:
+            for key, value in item["rules"].items():
+                print(f"    - {key}: {value}")

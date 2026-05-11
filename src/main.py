@@ -1,5 +1,4 @@
 from typing import override
-
 from live_trade_execution import execute_live_trade_with_effective_rules
 from manual_overrides import (
     save_manual_ticker_override,
@@ -8,6 +7,7 @@ from manual_overrides import (
     delete_manual_ticker_override,
     disable_manual_ticker_override,
     enable_manual_ticker_override,
+    list_manual_ticker_overrides
 )
 from live_trade_decision import evaluate_live_trade_with_effective_rules
 from ai_builder import (
@@ -42,7 +42,7 @@ from helpers import (
     display_change_requests,
     display_implementation_queue,
     display_watchlist_market_data,
-    display_manual_ticker_override,
+    display_manual_ticker_overrides,
 )
 from merged_position_exit import evaluate_position_with_effective_rules
 from merged_trade_decision import evaluate_trade_with_effective_rules
@@ -768,9 +768,8 @@ def main():
 
             result = save_manual_ticker_override(
                 ticker=ticker,
-                override_name=override_name,
                 override_rules=override_rules,
-                overwrite=overwrite,
+                name=override_name,
             )
 
             if result["saved"] is False:
@@ -849,6 +848,10 @@ def main():
 
             else:
                 print("Canceled.")
+
+        elif choice == "43":
+            overrides = list_manual_ticker_overrides()
+            display_manual_ticker_overrides(overrides)
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")
