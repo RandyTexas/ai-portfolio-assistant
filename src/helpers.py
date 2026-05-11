@@ -44,10 +44,11 @@ def print_menu():
     print("37. Execute live paper trade using market data")
     print("38. Save manual override for ticker")
     print("39. View saved manual ticker override")
-    print("40. Disable saved manual ticker override")
-    print("41. Enable saved manual ticker override")
-    print("42. Delete saved manual ticker override")
+    print("40. Disable manual ticker override")
+    print("41. Enable manual ticker override")
+    print("42. Delete manual ticker override")
     print("43. List all saved manual ticker overrides")
+    print("44. Edit saved manual ticker override")
     print("0. Exit")
 
 

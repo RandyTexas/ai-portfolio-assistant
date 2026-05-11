@@ -108,3 +108,35 @@ def list_manual_ticker_overrides():
         )
 
     return results
+
+
+def update_manual_ticker_override(ticker, updated_fields):
+    ticker = ticker.strip().upper()
+    store = load_ticker_override_store()
+
+    if ticker not in store:
+        return None
+
+    current = store[ticker]
+    current_rules = current.get("rules", {})
+
+    if "name" in updated_fields and updated_fields["name"] is not None:
+        current["name"] = updated_fields["name"].strip()
+
+    for rule_key in (
+        "take_profit_pct",
+        "stop_loss_pct",
+        "trailing_stop_pct",
+        "max_position_size_pct",
+    ):
+        if rule_key in updated_fields and updated_fields[rule_key] is not None:
+            current_rules[rule_key] = updated_fields[rule_key]
+
+    current["rules"] = current_rules
+    store[ticker] = current
+    save_ticker_override_store(store)
+
+    return {
+        "ticker": ticker,
+        "updated_override": store[ticker],
+    }
