@@ -717,13 +717,11 @@ def main():
 
         elif choice == "38":
             ticker = input("Enter ticker to save override for: ").strip().upper()
+
             default_name = f"{ticker} manual override"
             override_name = input(
                 f"Enter override name or leave blank for default [{default_name}]: "
             ).strip()
-
-            if not override_name:
-                override_name = default_name
 
             take_profit_pct_input = input(
                 "Enter take profit % override as decimal or leave blank: "
@@ -753,33 +751,40 @@ def main():
                 print("No override values entered.")
                 continue
 
-            overwrite = False
-            if get_manual_ticker_override(ticker) is not None:
-                print("\nAn override already exists for this ticker.")
-                print("1. Overwrite existing override")
-                print("2. Cancel")
-
-                overwrite_choice = input("Choose an option: ").strip()
-
-                if overwrite_choice == "1":
-                    overwrite = True
-                else:
-                    print("Canceled.")
-                    continue
-
             result = save_manual_ticker_override(
                 ticker=ticker,
                 override_rules=override_rules,
-                name=override_name,
+                name=override_name if override_name else None,
             )
 
-            if result["saved"] is False:
-                print(result["reason"])
+            print("\nSaved manual ticker override:")
+            print(f"- ticker: {result['ticker']}")
+            saved_override = result["saved_override"]
+            print(f"- name: {saved_override['name']}")
+            print(f"- enabled: {saved_override['enabled']}")
+            print("- rules:")
+            for key, value in saved_override["rules"].items():
+                print(f"  - {key}: {value}")
+
+        elif choice == "39":
+            ticker = input("Enter ticker to view saved override: ").strip().upper()
+            override = get_manual_ticker_override(ticker)
+
+            if override is None:
+                print("No saved manual override found for that ticker.")
                 continue
 
             print("\nSaved manual ticker override:")
-            for key, value in result.items():
-                print(f"- {key}: {value}")
+            print(f"- ticker: {ticker}")
+            print(f"- name: {override.get('name', f'{ticker} manual override')}")
+            print(f"- enabled: {override.get('enabled', True)}")
+            print("- rules:")
+            rules = override.get("rules", {})
+            if not rules:
+                print("  - none")
+            else:
+                for key, value in rules.items():
+                    print(f"  - {key}: {value}")
 
         elif choice == "39":
             ticker = input("Enter ticker to view saved override: ").strip().upper()
