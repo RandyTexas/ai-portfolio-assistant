@@ -7,7 +7,8 @@ from manual_overrides import (
     delete_manual_ticker_override,
     disable_manual_ticker_override,
     enable_manual_ticker_override,
-    list_manual_ticker_overrides
+    list_manual_ticker_overrides,
+    update_manual_ticker_override,
 )
 from live_trade_decision import evaluate_live_trade_with_effective_rules
 from ai_builder import (
@@ -852,6 +853,67 @@ def main():
         elif choice == "43":
             overrides = list_manual_ticker_overrides()
             display_manual_ticker_overrides(overrides)
+
+        elif choice == "44":
+            ticker = input("Enter ticker to edit saved override: ").strip().upper()
+            current = get_manual_ticker_override(ticker)
+
+            if current is None:
+                print("No saved manual override found for that ticker.")
+                continue
+
+            current_name = current.get("name", f"{ticker} manual override")
+            current_rules = current.get("rules", {})
+
+            print("\nCurrent saved override:")
+            print(f"- ticker: {ticker}")
+            print(f"- name: {current_name}")
+            print(f"- enabled: {current.get('enabled', True)}")
+            for key, value in current_rules.items():
+                print(f"- {key}: {value}")
+
+            new_name = input(f"Enter new name or press Enter to keep [{current_name}]: ").strip()
+
+            current_take_profit = current_rules.get("take_profit_pct", "")
+            current_stop_loss = current_rules.get("stop_loss_pct", "")
+            current_trailing_stop = current_rules.get("trailing_stop_pct", "")
+            current_max_position = current_rules.get("max_position_size_pct", "")
+
+            take_profit_input = input(
+                f"Enter take profit % or press Enter to keep [{current_take_profit}]: "
+            ).strip()
+            stop_loss_input = input(
+                f"Enter stop loss % or press Enter to keep [{current_stop_loss}]: "
+            ).strip()
+            trailing_stop_input = input(
+                f"Enter trailing stop % or press Enter to keep [{current_trailing_stop}]: "
+            ).strip()
+            max_position_input = input(
+                f"Enter max position size % or press Enter to keep [{current_max_position}]: "
+            ).strip()
+
+            updated_fields = {
+                "name": new_name if new_name else None,
+                "take_profit_pct": float(take_profit_input) if take_profit_input else None,
+                "stop_loss_pct": float(stop_loss_input) if stop_loss_input else None,
+                "trailing_stop_pct": float(trailing_stop_input) if trailing_stop_input else None,
+                "max_position_size_pct": float(max_position_input) if max_position_input else None,
+            }
+
+            result = update_manual_ticker_override(ticker, updated_fields)
+
+            if result is None:
+                print("Could not update saved manual override.")
+                continue
+
+            print("\nUpdated manual ticker override:")
+            print(f"- ticker: {result['ticker']}")
+            updated_override = result["updated_override"]
+            print(f"- name: {updated_override['name']}")
+            print(f"- enabled: {updated_override['enabled']}")
+            print("- rules:")
+            for key, value in updated_override["rules"].items():
+                print(f"  - {key}: {value}")
 
         elif choice == "0":
             print("Exiting AI Portfolio Assistant.")
