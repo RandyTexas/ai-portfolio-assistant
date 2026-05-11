@@ -91,3 +91,20 @@ def enable_manual_ticker_override(ticker):
     store[ticker]["enabled"] = True
     save_ticker_override_store(store)
     return True
+
+
+def list_manual_ticker_overrides():
+    store = load_ticker_override_store()
+    results = []
+
+    for ticker, data in store.items():
+        results.append(
+            {
+                "ticker": ticker,
+                "name": data.get("name", f"{ticker} manual override"),
+                "enabled": data.get("enabled", True),
+                "rules": data.get("rules", {}),
+            }
+        )
+
+    return results
