@@ -38,6 +38,16 @@ def test_unknown_risk_profile_returns_none():
     assert profile is None
 
 
+def test_scalp_fast_matrix_profile_exists():
+    profile = get_matrix_profile("scalp_fast")
+
+    assert profile is not None
+    assert profile["take_profit_pct"] == 0.02
+    assert profile["stop_loss_pct"] == 0.01
+    assert profile["trailing_stop_pct"] == 0.01
+    assert profile["max_position_size_pct"] == 0.04
+
+
 def test_quick_trade_matrix_profile_exists():
     profile = get_matrix_profile("quick_trade")
 
@@ -58,6 +68,16 @@ def test_short_hold_matrix_profile_exists():
     assert profile["max_position_size_pct"] == 0.10
 
 
+def test_swing_hold_matrix_profile_exists():
+    profile = get_matrix_profile("swing_hold")
+
+    assert profile is not None
+    assert profile["take_profit_pct"] == 0.12
+    assert profile["stop_loss_pct"] == 0.05
+    assert profile["trailing_stop_pct"] == 0.04
+    assert profile["max_position_size_pct"] == 0.08
+
+
 def test_unknown_matrix_profile_returns_none():
     profile = get_matrix_profile("unknown")
 
@@ -67,5 +87,7 @@ def test_unknown_matrix_profile_returns_none():
 def test_list_matrix_profiles_returns_expected_names():
     profiles = list_matrix_profiles()
 
+    assert "scalp_fast" in profiles
     assert "quick_trade" in profiles
     assert "short_hold" in profiles
+    assert "swing_hold" in profiles

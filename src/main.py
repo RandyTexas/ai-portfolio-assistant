@@ -44,6 +44,7 @@ from helpers import (
     display_implementation_queue,
     display_watchlist_market_data,
     display_manual_ticker_overrides,
+    prompt_for_trade_style,
 )
 from merged_position_exit import evaluate_position_with_effective_rules
 from merged_trade_decision import evaluate_trade_with_effective_rules
@@ -412,7 +413,7 @@ def main():
 
         elif choice == "22":
             risk_profile_name = input("Enter risk profile name (passive/balanced/aggressive): ").strip().lower()
-            trade_style_name = input("Enter trade-style name (quick_trade/short_hold) or leave blank: ").strip().lower()
+            trade_style_name = prompt_for_trade_style(list_matrix_profiles)
             ticker = input("Enter ticker for override check or leave blank: ").strip().upper()
 
             rules = build_effective_rules(
@@ -434,7 +435,7 @@ def main():
 
         elif choice == "23":
             risk_profile_name = input("Enter risk profile name (passive/balanced/aggressive): ").strip().lower()
-            trade_style_name = input("Enter trade-style name (quick_trade/short_hold) or leave blank: ").strip().lower()
+            trade_style_name = prompt_for_trade_style(list_matrix_profiles)
             ticker = input("Enter ticker for override check or leave blank: ").strip().upper()
             portfolio_cash = float(input("Enter portfolio cash: ").strip())
             position_size_dollars = float(input("Enter position size in dollars: ").strip())
@@ -456,7 +457,7 @@ def main():
         elif choice == "24":
             ticker = input("Enter ticker: ").strip().upper()
             risk_profile_name = input("Enter risk profile name (passive/balanced/aggressive): ").strip().lower()
-            trade_style_name = input("Enter trade-style name (quick_trade/short_hold) or leave blank: ").strip().lower()
+            trade_style_name = prompt_for_trade_style(list_matrix_profiles)
             portfolio_cash = float(input("Enter portfolio cash: ").strip())
             position_size_dollars = float(input("Enter position size in dollars: ").strip())
             entry_price = float(input("Enter entry price: ").strip())
@@ -485,7 +486,7 @@ def main():
         elif choice == "25":
             ticker = input("Enter ticker with open position: ").strip().upper()
             risk_profile_name = input("Enter risk profile name (passive/balanced/aggressive): ").strip().lower()
-            trade_style_name = input("Enter trade-style name (quick_trade/short_hold) or leave blank: ").strip().lower()
+            trade_style_name = prompt_for_trade_style(list_matrix_profiles)
             current_price = float(input("Enter current price: ").strip())
             highest_price = float(input("Enter highest price reached: ").strip())
 
@@ -648,9 +649,7 @@ def main():
             risk_profile_name = input(
                 "Enter risk profile name (passive/balanced/aggressive): "
             ).strip().lower()
-            trade_style_name = input(
-                "Enter trade-style name (quick_trade/short_hold) or leave blank: "
-            ).strip().lower()
+            trade_style_name = prompt_for_trade_style(list_matrix_profiles)
             portfolio_cash = float(input("Enter portfolio cash: ").strip())
             position_size_dollars = float(input("Enter position size in dollars: ").strip())
             feed = input("Enter stock feed (iex/delayed_sip/sip) or leave blank for iex. Ignored for crypto: ").strip().lower()
@@ -680,9 +679,7 @@ def main():
             risk_profile_name = input(
                 "Enter risk profile name (passive/balanced/aggressive): "
             ).strip().lower()
-            trade_style_name = input(
-                "Enter trade-style name (quick_trade/short_hold) or leave blank: "
-            ).strip().lower()
+            trade_style_name = prompt_for_trade_style(list_matrix_profiles)
             portfolio_cash = float(input("Enter portfolio cash: ").strip())
             position_size_dollars = float(input("Enter position size in dollars: ").strip())
             feed = input("Enter stock feed (iex/delayed_sip/sip) or leave blank for iex: ").strip().lower()

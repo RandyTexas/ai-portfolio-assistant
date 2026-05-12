@@ -182,3 +182,23 @@ def display_manual_ticker_overrides(overrides):
         else:
             for key, value in item["rules"].items():
                 print(f"    - {key}: {value}")
+
+def prompt_for_trade_style(list_matrix_profiles):
+    available = list_matrix_profiles()
+
+    while True:
+        print("\nAvailable trade styles:")
+        for name in available:
+            print(f"- {name}")
+
+        trade_style_name = input(
+            "Enter trade-style name or press Enter to cancel: "
+        ).strip().lower()
+
+        if not trade_style_name:
+            return None
+
+        if trade_style_name in available:
+            return trade_style_name
+
+        print("Invalid trade style. Please choose one of the listed options.")
