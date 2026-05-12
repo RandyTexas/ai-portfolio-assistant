@@ -16,18 +16,36 @@ def build_effective_rules_with_manual_override(
     if rules is None:
         return None
 
+    result = {
+        "rules": rules,
+        "manual_override_found": False,
+        "manual_override_enabled": False,
+        "manual_override_applied": False,
+        "manual_override_name": None,
+        "manual_override_rules": {},
+    }
+
     if not ticker:
-        return rules
+        return result
 
     manual_override = get_manual_ticker_override(ticker)
 
     if manual_override is None:
-        return rules
+        return result
 
-    if not manual_override.get("enabled", True):
-        return rules
+    result["manual_override_found"] = True
+    result["manual_override_enabled"] = manual_override.get("enabled", True)
+    result["manual_override_name"] = manual_override.get(
+        "name", f"{ticker} manual override"
+    )
+    result["manual_override_rules"] = manual_override.get("rules", {})
 
-    manual_rules = manual_override.get("rules", {})
+    if not result["manual_override_enabled"]:
+        return result
+
     merged = dict(rules)
-    merged.update(manual_rules)
-    return merged
+    merged.update(result["manual_override_rules"])
+
+    result["rules"] = merged
+    result["manual_override_applied"] = True
+    return result

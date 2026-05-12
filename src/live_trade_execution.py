@@ -23,19 +23,21 @@ def execute_live_trade_with_effective_rules(
 
     entry_price = latest_bar["close"]
 
-    rules = build_effective_rules_with_manual_override(
+    merged_result = build_effective_rules_with_manual_override(
         risk_profile_name=risk_profile_name,
         trade_style_name=trade_style_name,
         ticker=ticker,
     )
 
-    if rules is None:
+    if merged_result is None:
         return {
             "executed": False,
             "reason": "Could not build effective rules.",
             "latest_bar": latest_bar,
             "entry_price_used": entry_price,
         }
+
+    rules = merged_result["rules"]
 
     result = execute_trade_with_effective_rules(
         portfolio=portfolio,
@@ -48,6 +50,11 @@ def execute_live_trade_with_effective_rules(
     )
 
     result["rules_used"] = rules
+    result["manual_override_found"] = merged_result["manual_override_found"]
+    result["manual_override_enabled"] = merged_result["manual_override_enabled"]
+    result["manual_override_applied"] = merged_result["manual_override_applied"]
+    result["manual_override_name"] = merged_result["manual_override_name"]
+    result["manual_override_rules"] = merged_result["manual_override_rules"]
 
     return {
         **result,

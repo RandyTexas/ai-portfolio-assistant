@@ -671,8 +671,34 @@ def main():
                 continue
 
             print("\nLive merged-rule trade decision result:")
-            for key, value in result.items():
-                print(f"- {key}: {value}")
+            print(f"- approved: {result.get('approved')}")
+            print(f"- reason: {result.get('reason')}")
+            print(f"- entry_price_used: {result.get('entry_price_used')}")
+            print(f"- max_position_size: {result.get('max_position_size')}")
+            print(f"- stop_loss_price: {result.get('stop_loss_price')}")
+            print(f"- take_profit_price: {result.get('take_profit_price')}")
+            print(f"- manual_override_found: {result.get('manual_override_found')}")
+            print(f"- manual_override_enabled: {result.get('manual_override_enabled')}")
+            print(f"- manual_override_applied: {result.get('manual_override_applied')}")
+            print(f"- manual_override_name: {result.get('manual_override_name')}")
+
+            latest_bar = result.get("latest_bar")
+            if latest_bar:
+                print("- latest_bar:")
+                for key, value in latest_bar.items():
+                    print(f"  - {key}: {value}")
+
+            rules_used = result.get("rules_used")
+            if rules_used:
+                print("- rules_used:")
+                for key, value in rules_used.items():
+                    print(f"  - {key}: {value}")
+
+            manual_override_rules = result.get("manual_override_rules")
+            if manual_override_rules:
+                print("- manual_override_rules:")
+                for key, value in manual_override_rules.items():
+                    print(f"  - {key}: {value}")
     
         elif choice == "37":
             ticker = input("Enter ticker: ").strip().upper()
@@ -702,8 +728,33 @@ def main():
                 continue
 
             print("\nLive merged-rule paper trade execution result:")
-            for key, value in result.items():
-                print(f"- {key}: {value}")
+            print(f"- executed: {result.get('executed')}")
+            print(f"- reason: {result.get('reason')}")
+            print(f"- entry_price_used: {result.get('entry_price_used')}")
+            print(f"- shares_bought: {result.get('shares_bought')}")
+            print(f"- total_cost: {result.get('total_cost')}")
+            print(f"- manual_override_found: {result.get('manual_override_found')}")
+            print(f"- manual_override_enabled: {result.get('manual_override_enabled')}")
+            print(f"- manual_override_applied: {result.get('manual_override_applied')}")
+            print(f"- manual_override_name: {result.get('manual_override_name')}")
+
+            latest_bar = result.get("latest_bar")
+            if latest_bar:
+                print("- latest_bar:")
+                for key, value in latest_bar.items():
+                    print(f"  - {key}: {value}")
+
+            rules_used = result.get("rules_used")
+            if rules_used:
+                print("- rules_used:")
+                for key, value in rules_used.items():
+                    print(f"  - {key}: {value}")
+
+            manual_override_rules = result.get("manual_override_rules")
+            if manual_override_rules:
+                print("- manual_override_rules:")
+                for key, value in manual_override_rules.items():
+                    print(f"  - {key}: {value}")
 
             updated_summary = get_portfolio_summary(portfolio)
             print("\nUpdated portfolio summary:")
