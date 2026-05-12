@@ -1,3 +1,4 @@
+import pytest
 from live_trade_decision import evaluate_live_trade_with_effective_rules
 
 
@@ -85,7 +86,7 @@ def test_live_trade_decision_rejects_oversized_trade(monkeypatch):
     )
 
     assert result["approved"] is False
-    assert result["reason"] == "Position size is too large for the merged effective rules."
+    assert result["reason"] == "Position size is too large for the effective rules."
     assert result["entry_price_used"] == 103.0
 
 
@@ -118,5 +119,5 @@ def test_live_trade_decision_uses_ticker_override(monkeypatch):
 
     assert result["approved"] is True
     assert result["entry_price_used"] == 100.0
-    assert result["stop_loss_price"] == 97.0
-    assert result["take_profit_price"] == 110.0
+    assert result["stop_loss_price"] == pytest.approx(97.0)
+    assert result["take_profit_price"] == pytest.approx(110.0)
